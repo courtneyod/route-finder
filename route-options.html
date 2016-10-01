@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/route-options.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+  <script src="js/index.js" charset="utf-8"></script>
+  <script src="js/route-options.js" charset="utf-8"></script>
+  <title>Route Finder</title>
+</head>
+<body>
+  <div class="navbar-fixed">
+    <nav class="master-nav-head">
+      <div class="nav-wrapper">
+        <div class="container">
+          <img class="nav-content" src="./img/route-finder.png" alt="" />
+          <p class="nav-content brand-logo" >RouteFinder</p>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <main class="main-container">
+    <div class="route-container">
+      <div class="top-panel">
+        <form action="">
+          <label for="location">Location
+            <input class="route-options-location" type="text" placeholder="Location" id="location" name="location" required />
+          </label>
+          <label for="distance">Distance
+            <input class="route-options-distance" type="text" placeholder="Max Distance" id="distance" name="distance" />
+          </label>
+          <label for="elev-gain">Elevation Gain
+            <input class="route-options-elev-gain" type="number" placeholder="Max Elevation Gain" id="elev-gain" name="elevgain" />
+          </label>
+          <label for="elev-min">Elevation Min
+            <input class="route-options-elev-min" type="number" placeholder="Min Elevation Gain" id="elev-min" name="elevmin" />
+          </label>
+          <div class="button">
+
+            <img class="button-img" src="./img/Search_Dark.png" alt="">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer>
+
+    </footer>
+
+  </main>
+</body>
+</html>

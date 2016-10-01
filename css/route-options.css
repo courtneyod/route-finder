@@ -1,0 +1,113 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+label {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size:0;
+  clip: rect(0, 0, 0, 0);
+}
+
+.master-nav-head {
+  /*display: flex;
+  flex-direction: row;
+  justify-content: space-between;*/
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+}
+
+nav {
+  height: 40px;
+  line-height: 20px;
+  color: #FC4C02;;
+  background-color: #dfdfdf;
+  width: 100%;
+  opacity: 0.8;
+  filter: alpha(opacity=50);
+}
+
+.nav-content {
+  display: inline-block;
+  font-size: 160%;
+}
+
+.master-nav-head img {
+  width: 3%;
+  padding-left: 2%;
+}
+
+.top-panel {
+  background-color: #F1F1F1;
+  top: 0;
+  height: 45px;
+  padding: 6px 20px;
+}
+
+input {
+  width: 180px;
+  font-size: 14px;
+  padding: 12px;
+  margin: 0 10px;
+}
+
+.button {
+  display: inline-block;
+  background-color: #ccc;
+  height: 34px;
+  width: 57px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.button-img {
+  width: 24px;
+}
