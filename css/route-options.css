@@ -111,3 +111,15 @@ input {
 .button-img {
   width: 24px;
 }
+
+.search-results-container {
+  height: 200px;
+  background-color: white;
+  width: 350px;
+}
+
+.number-of-results-container {
+  height: 60px;
+  background-color: pink;
+  width: 350px;
+}
