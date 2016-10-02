@@ -7,6 +7,9 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/route-options.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <!-- <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsDkO423I8_oOVOV4C5mI9BGDsuyp62F8&callback=initMap"
+  async defer></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
   <script src="js/index.js" charset="utf-8"></script>
   <script src="js/route-options.js" charset="utf-8"></script>
@@ -28,16 +31,16 @@
       <div class="top-panel">
         <form action="">
           <label for="location">Location
-            <input class="route-options-location" type="text" placeholder="Location" id="location" name="location" required />
+            <input class="route-input route-options-location" type="text" placeholder="Location" id="location" name="location" required />
           </label>
           <label for="distance">Distance
-            <input class="route-options-distance" type="text" placeholder="Max Distance" id="distance" name="distance" />
+            <input class="route-input route-options-distance" type="text" placeholder="Max Distance" id="distance" name="distance" />
           </label>
           <label for="elev-gain">Elevation Gain
-            <input class="route-options-elev-gain" type="number" placeholder="Max Elevation Gain" id="elev-gain" name="elevgain" />
+            <input class="route-input route-options-elev-gain" type="number" placeholder="Max Elevation Gain" id="elev-gain" name="elevgain" />
           </label>
           <label for="elev-min">Elevation Min
-            <input class="route-options-elev-min" type="number" placeholder="Min Elevation Gain" id="elev-min" name="elevmin" />
+            <input class="route-input route-options-elev-min" type="number" placeholder="Min Elevation Gain" id="elev-min" name="elevmin" />
           </label>
           <div class="button">
             <img class="button-img" src="./img/Search_Dark.png" alt="">
@@ -45,9 +48,14 @@
         </form>
       </div>
       <div class="search-results-container">
-        <div class="number-of-results-container"></div>
+        <div class="number-of-results-container">
+
+        </div>
+        <div class="ride-details">
+
+        </div>
       </div>
-      <div class="map-container">
+      <div id="map" class="map-container">
 
       </div>
     </div>

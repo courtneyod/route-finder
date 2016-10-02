@@ -53,9 +53,6 @@ label {
 }
 
 .master-nav-head {
-  /*display: flex;
-  flex-direction: row;
-  justify-content: space-between;*/
   padding: 10px;
   position: fixed;
   top: 0;
@@ -67,7 +64,7 @@ label {
 nav {
   height: 40px;
   line-height: 20px;
-  color: #FC4C02;;
+  color: #FC4C02;
   background-color: #dfdfdf;
   width: 100%;
   opacity: 0.8;
@@ -160,11 +157,15 @@ nav {
   font-size: 16px;
   margin-top: 30px;
   border-radius: 3px;
-  width: 80%;
+  width: 70%;
   color: #fff;
   background-color: #FC4C02;
   border-color: #FC4C02;
   border: 1px solid #ccc;
+	font-weight: 700;
+  font-size: 18px;
+  letter-spacing: .01rem;
+  text-transform: Uppercase;
 }
 
 .form-container button:hover {

@@ -22,9 +22,6 @@ window.onload = function() {
   passInParams(params);
 
   //document.getElementById('search-button').addEventListener('click', checkSearchValue);
-
-  var routeOptions = [];
-
   function passInParams(parameters){
     var location = parameters.location;
     var distance = parameters.distance;
@@ -47,6 +44,9 @@ window.onload = function() {
     var inputElevMin = document.getElementsByClassName("route-options-elev-min")[0];
     inputElevMin.value = elevMin;
   }
+}
+
+var routeOptions = [];
 
   function getIdsAjax(location, distance, elevGain, elevMin) {
     //console.log("getting called")
@@ -65,65 +65,112 @@ window.onload = function() {
   //
   //
   var renderRouteIds = function(routeOptions) {
-      var routeIdArray = [];
-      var routeContainerObj = {}
-      for (var i = 0; i < routeOptions.length; i++) {
-        if(routeOptions[i].type === "trip"){
-          routeIdArray.push(routeOptions[i].trip.route_id);
+    var routeIdArray = [];
+    for (var i = 0; i < routeOptions.length; i++) {
+      if(routeOptions[i].type === "trip"){
+        routeIdArray.push(routeOptions[i].trip.route_id);
 
-          routeContainerObj[1 + i] =
-          {
-            "ids": routeOptions[i].trip.route_id,
-            "distance": routeOptions[i].trip.distance,
-            "elevation_gain": routeOptions[i].trip.elevation_gain,
-            "elevation_loss": routeOptions[i].trip.elevation_loss,
-            "first_lat": routeOptions[i].trip.first_lat,
-            "last_lat": routeOptions[i].trip.last_lat,
-            "first_lng": routeOptions[i].trip.first_lng,
-            "last_lng": routeOptions[i].trip.last_lng,
-            "city": routeOptions[i].trip.locality,
-            "state": routeOptions[i].trip.administrative_area,
-            "postal_code": routeOptions[i].trip.postal_code
-           };
+        routeContainerObj.push({
+          "ids": routeOptions[i].trip.route_id,
+          "distance": routeOptions[i].trip.distance,
+          "elevation_gain": routeOptions[i].trip.elevation_gain,
+          "elevation_loss": routeOptions[i].trip.elevation_loss,
+          "first_lat": routeOptions[i].trip.first_lat,
+          "last_lat": routeOptions[i].trip.last_lat,
+          "first_lng": routeOptions[i].trip.first_lng,
+          "last_lng": routeOptions[i].trip.last_lng,
+          "city": routeOptions[i].trip.locality,
+          "duration": routeOptions[i].trip.duration,
+          "state": routeOptions[i].trip.administrative_area,
+          "postal_code": routeOptions[i].trip.postal_code
+        });
 
-        } if (routeOptions[i].type === "route"){
-          routeIdArray.push(routeOptions[i].route.id);
+      } if (routeOptions[i].type === "route"){
+        routeIdArray.push(routeOptions[i].route.id);
 
-          routeContainerObj[1 + i] =
-          {
-            "ids": routeOptions[i].route.id,
-            "distance": routeOptions[i].route.distance,
-            "elevation_gain": routeOptions[i].route.elevation_gain,
-            "elevation_loss": routeOptions[i].route.elevation_loss,
-            "first_lat": routeOptions[i].route.first_lat,
-            "last_lat": routeOptions[i].route.last_lat,
-            "first_lng": routeOptions[i].route.first_lng,
-            "last_lng": routeOptions[i].route.last_lng,
-            "city": routeOptions[i].route.locality,
-            "state": routeOptions[i].route.administrative_area,
-            "postal_code": routeOptions[i].route.postal_code
-           };
-        }
+        routeContainerObj.push({
+          "ids": routeOptions[i].route.id,
+          "distance": routeOptions[i].route.distance,
+          "elevation_gain": routeOptions[i].route.elevation_gain,
+          "elevation_loss": routeOptions[i].route.elevation_loss,
+          "first_lat": routeOptions[i].route.first_lat,
+          "last_lat": routeOptions[i].route.last_lat,
+          "first_lng": routeOptions[i].route.first_lng,
+          "last_lng": routeOptions[i].route.last_lng,
+          "city": routeOptions[i].route.locality,
+          "duration": routeOptions[i].route.duration,
+          "state": routeOptions[i].route.administrative_area,
+          "postal_code": routeOptions[i].route.postal_code
+        });
       }
-      console.log(routeIdArray);
-      console.log(routeContainerObj);
-      //getRoutesAjax(routeIdArray);
-    };
-
-    function getRoutesAjax(routeIdArray) {
-      console.log(" getroutes array getting called");
-      var routeId = routeIdArray[0];
-      $.ajax({
-        url:  `https://ridewithgps.com/routes/${routeId}.js`,
-        method: "GET",
-        dataType: "jsonp"
-      })
-      .done(function(data){
-        console.log(data);
-        console.log("it worked")
-      });
     }
+    console.log(routeIdArray);
+    //console.log(routeContainerObj);
+    renderRideOptions(routeContainerObj);
+    //getRoutesAjax(routeIdArray);
+  };
 
-    
+var routeContainerObj = [];
+console.log(routeContainerObj, "hi");
 
-};
+  function getRoutesAjax(routeIdArray) {
+    console.log(" getroutes array getting called");
+    var routeId = routeIdArray[0];
+    $.ajax({
+      url:  `https://ridewithgps.com/routes/${routeId}.js`,
+      method: "GET",
+      dataType: "jsonp"
+    })
+    .done(function(data){
+      console.log(data);
+      console.log("it worked");
+    });
+  }
+
+  function renderRideOptions(routeObject){
+    console.log(routeObject, "hi this is in renderRideOptions");
+    console.log(routeObject.length)
+    var resultsContainer = document.getElementsByClassName('number-of-results-container')[0];
+    resultsContainer.innerHTML = routeObject.length + " routes match";
+
+    var rideDetails = document.getElementsByClassName('ride-details')[0];
+
+    for (var route of routeObject) {
+      var col = document.createElement("div");
+      col.className = "result-card-container";
+      var card = document.createElement("div");
+      card.className = "result-card";
+      var headline = document.createElement("h3");
+      headline.className = "card-title";
+      var cardMile = document.createElement("div");
+      cardMile.className = "card-mile card-details";
+      var cardElevGain = document.createElement("div");
+      cardElevGain.className = "card-elev-gain card-details";
+      var duration = document.createElement("div");
+      duration.className = "card-duration card-details";
+
+      rideDetails.appendChild(col);
+      col.appendChild(card);
+
+      headline.innerHTML = "City " + route.city + ", " + route.state;
+      card.appendChild(headline);
+
+      cardMile.innerHTML = ((route.distance)*(0.000621)).toFixed(1) + " mi";
+      card.appendChild(cardMile);
+
+      cardElevGain.innerHTML = ((route.elevation_gain)*(3.2808399)).toFixed(1) + " ft";
+      card.appendChild(cardElevGain);
+
+      duration.innerHTML = route.duration + " estimated time";
+      card.appendChild(duration);
+    }
+    initMap();
+}
+
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 38.630306, lng: -121.356239},
+    zoom: 8
+  });
+}
