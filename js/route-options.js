@@ -164,13 +164,23 @@ console.log(routeContainerObj, "hi");
       duration.innerHTML = route.duration + " estimated time";
       card.appendChild(duration);
     }
-    initMap();
+    console.log(routeObject[0].first_lat, routeObject[0].first_lng);
+    initMap(routeObject[0].first_lat, routeObject[0].first_lng);
 }
 
 var map;
-function initMap() {
+function initMap(firstLat ,firstLong) {
+  var myLatLng = {lat: firstLat, lng: firstLong};
+
   map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 38.630306, lng: -121.356239},
-    zoom: 8
+    center: myLatLng,
+    zoom: 12
   });
+  
+  var marker = new google.maps.Marker({
+    position: myLatLng,
+    map: map,
+    title: 'Hello World!'
+  });
+  var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 }
