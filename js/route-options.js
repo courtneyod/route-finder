@@ -62,8 +62,9 @@ var routeOptions = [];
       renderRouteIds(routeOptions);
     });
   }
-  //
-  //
+
+  var routeContainerObj = [];
+
   var renderRouteIds = function(routeOptions) {
     var routeIdArray = [];
     for (var i = 0; i < routeOptions.length; i++) {
@@ -108,9 +109,9 @@ var routeOptions = [];
     //console.log(routeContainerObj);
     renderRideOptions(routeContainerObj);
     //getRoutesAjax(routeIdArray);
+    latLongObject(routeContainerObj);
   };
 
-var routeContainerObj = [];
 console.log(routeContainerObj, "hi");
 
   function getRoutesAjax(routeIdArray) {
@@ -128,8 +129,8 @@ console.log(routeContainerObj, "hi");
   }
 
   function renderRideOptions(routeObject){
-    console.log(routeObject, "hi this is in renderRideOptions");
-    console.log(routeObject.length)
+    //console.log(routeObject, "hi this is in renderRideOptions");
+    //console.log(routeObject.length)
     var resultsContainer = document.getElementsByClassName('number-of-results-container')[0];
     resultsContainer.innerHTML = routeObject.length + " routes match";
 
@@ -164,23 +165,42 @@ console.log(routeContainerObj, "hi");
       duration.innerHTML = route.duration + " estimated time";
       card.appendChild(duration);
     }
-    console.log(routeObject[0].first_lat, routeObject[0].first_lng);
-    initMap(routeObject[0].first_lat, routeObject[0].first_lng);
+    //console.log(routeObject[0].first_lat, routeObject[0].first_lng);
 }
 
-var map;
-function initMap(firstLat ,firstLong) {
-  var myLatLng = {lat: firstLat, lng: firstLong};
+function latLongObject(routeObject){
+  var locations = [];
+  for (var route of routeObject) {
+    locations.push(
+    {
+      "lat": route.first_lat,
+      "lng": route.first_lng
+    });
+  }
+  console.log(locations, "this is locations")
+  initMap(routeObject[0].first_lat, routeObject[0].first_lng, locations);
+}
 
-  map = new google.maps.Map(document.getElementById('map'), {
+
+function initMap(firstLat ,firstLong, locations) {
+  var myLatLng = {lat: firstLat, lng: firstLong};
+  var labelIndex = 0;
+  var map = new google.maps.Map(document.getElementById('map'), {
     center: myLatLng,
     zoom: 12
   });
-  
+
   var marker = new google.maps.Marker({
     position: myLatLng,
     map: map,
     title: 'Hello World!'
   });
-  var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  // var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  // var markers = locations.map(function(location, i) {
+  //         return new google.maps.Marker({
+  //           position: location,
+  //           label: labels[i % labels.length]
+  //         });
+  //       });
+
 }
