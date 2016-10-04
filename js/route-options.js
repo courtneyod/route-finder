@@ -1,10 +1,31 @@
 "use strict"
 
 window.onload = function() {
+  var mapObj;
+  init();
 
-  var params = {};
 
-  function getUrls(){
+  function init(){
+    var userInput = getQueryParams();
+    addValuesToInput(userInput.location, userInput.distance, userInput.elevGain, userInput.elevMin);
+    var routesPromise = getMatchingRoutes(userInput.location, userInput.distance, userInput.elevGain, userInput.elevMin);
+
+    routesPromise.done(function(data){
+      var routeOptions = data.results;
+      var friendlyRouteObjects = mapRoutesToFriendlyObjects(routeOptions);
+
+      renderRideOptions(friendlyRouteObjects.routeContainerObj);
+
+      var centerLat = friendlyRouteObjects.routeContainerObj[0].first_lat;
+      var centerLong = friendlyRouteObjects.routeContainerObj[0].first_lng;
+
+      var firstLatLongArrayForRides = latLongObject(friendlyRouteObjects.routeContainerObj)
+      mapObj = initMap(centerLat, centerLong, firstLatLongArrayForRides);
+
+    });
+ }
+
+  function getQueryParams(){
     let url = window.location.href;
     let vars = {};
 
@@ -16,23 +37,8 @@ window.onload = function() {
       }
 
     return vars;
-    }
-
-  params = getUrls();
-  passInParams(params);
-
-  //document.getElementById('search-button').addEventListener('click', checkSearchValue);
-  function passInParams(parameters){
-    var location = parameters.location;
-    var distance = parameters.distance;
-    var elevGain = parameters.elevgain;
-    var elevMin = parameters.elevmin;
-    //console.log(location, distance, elevGain, elevMin);
-    // if(!location){
-      addValuesToInput(location, distance, elevGain, elevMin);
-      getIdsAjax(location, distance, elevGain, elevMin);
-    // }
   }
+
 
   function addValuesToInput(location, distance, elevGain, elevMin){
     var inputLocation = document.getElementsByClassName("route-options-location")[0];
@@ -44,29 +50,20 @@ window.onload = function() {
     var inputElevMin = document.getElementsByClassName("route-options-elev-min")[0];
     inputElevMin.value = elevMin;
   }
-}
 
-var routeOptions = [];
-
-  function getIdsAjax(location, distance, elevGain, elevMin) {
-    //console.log("getting called")
-    $.ajax({
+  function getMatchingRoutes(location, distance, elevGain, elevMin) {
+    return $.ajax({
       url:  `https://ridewithgps.com/find/search.js?search%5Bkeywords%5D=&search%5Bstart_location%5D=San+Francisco%2C+CA&search%5Bstart_distance%5D=${distance}&search%5Belevation_max%5D=${elevGain}&search%5Belevation_min%5D=${elevMin}&search%5Blength_max%5D=1200&search%5Blength_min%5D=50&search%5Boffset%5D=0&search%5Blimit%5D=20&search%5Bsort_by%5D=length+des`,
       method: "GET",
       dataType: "jsonp"
     })
-    .done(function(data){
-      //console.log(data.results[0].trip);
-      routeOptions = data.results;
-      console.log(routeOptions);
-      renderRouteIds(routeOptions);
-    });
   }
 
-  var routeContainerObj = [];
 
-  var renderRouteIds = function(routeOptions) {
+  // TODO - refactor using .map()
+  var mapRoutesToFriendlyObjects = function(routeOptions) {
     var routeIdArray = [];
+    var routeContainerObj = [];
     for (var i = 0; i < routeOptions.length; i++) {
       if(routeOptions[i].type === "trip"){
         routeIdArray.push(routeOptions[i].trip.route_id);
@@ -105,32 +102,18 @@ var routeOptions = [];
         });
       }
     }
-    console.log(routeIdArray);
-    //console.log(routeContainerObj);
-    renderRideOptions(routeContainerObj);
-    //getRoutesAjax(routeIdArray);
-    latLongObject(routeContainerObj);
+
+    return {
+      routeContainerObj,
+      routeIdArray
+    }
+
   };
 
-console.log(routeContainerObj, "hi");
-
-  function getRoutesAjax(routeIdArray) {
-    console.log(" getroutes array getting called");
-    var routeId = routeIdArray[0];
-    $.ajax({
-      url:  `https://ridewithgps.com/routes/${routeId}.js`,
-      method: "GET",
-      dataType: "jsonp"
-    })
-    .done(function(data){
-      console.log(data);
-      console.log("it worked");
-    });
-  }
-
   function renderRideOptions(routeObject){
-    //console.log(routeObject, "hi this is in renderRideOptions");
-    //console.log(routeObject.length)
+
+    // add click handler that then calls: displayRouteOnMap (pass in routeId for a card)
+
     var resultsContainer = document.getElementsByClassName('number-of-results-container')[0];
     resultsContainer.innerHTML = routeObject.length + " routes match";
 
@@ -141,8 +124,9 @@ console.log(routeContainerObj, "hi");
       col.className = "result-card-container";
       var card = document.createElement("div");
       card.className = "result-card";
+      card.id = route.ids;
       var headline = document.createElement("h3");
-      headline.className = "card-title";
+      headline.className = "city-state";
       var cardMile = document.createElement("div");
       cardMile.className = "card-mile card-details";
       var cardElevGain = document.createElement("div");
@@ -164,43 +148,156 @@ console.log(routeContainerObj, "hi");
 
       duration.innerHTML = route.duration + " estimated time";
       card.appendChild(duration);
-    }
-    //console.log(routeObject[0].first_lat, routeObject[0].first_lng);
-}
 
-function latLongObject(routeObject){
-  var locations = [];
-  for (var route of routeObject) {
-    locations.push(
-    {
-      "lat": route.first_lat,
-      "lng": route.first_lng
+      createClickEventForEachCard('click', card);
+    }
+
+  }
+
+  function createClickEventForEachCard(eventName, element){
+    element.addEventListener(eventName, function(event) {
+      var routeId = event.currentTarget.id;
+      console.log(routeId, "this is the route id")
+      displayRouteOnMap(routeId);
     });
   }
-  console.log(locations, "this is locations")
-  initMap(routeObject[0].first_lat, routeObject[0].first_lng, locations);
+
+
+  function initMap(firstLat ,firstLong, locations) {
+    var myLatLng = {lat: firstLat, lng: firstLong};
+    var labelIndex = 0;
+    var map = new google.maps.Map(document.getElementById('map'), {
+      center: myLatLng,
+      zoom: 12
+    });
+
+    // var marker = new google.maps.Marker({
+    //   position: myLatLng,
+    //   map: map,
+    //   title: 'Hello World!'
+    // });
+
+    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var markers = locations.map(function(location, i) {
+            return new google.maps.Marker({
+              position: location,
+              label: labels[i % labels.length]
+            });
+          });
+    //
+    // var bikeLayer = new google.maps.BicyclingLayer();
+    // bikeLayer.setMap(map);
+
+    var directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay.setMap(map);
+
+    var directionsService = new google.maps.DirectionsService();
+
+    return {
+      map,
+      directionsDisplay,
+      directionsService
+    }
+  }
+
+
+  function displayRouteOnMap(routeId){
+    var routeDetailsPromise = getRouteDetails(routeId);
+    routeDetailsPromise.done(function(data){
+      putPathOnMap(data.track_points)
+    });
+  }
+
+
+  function getRouteDetails(routeId) {
+    return $.ajax({
+      url:  `https://ridewithgps.com/routes/${routeId}.json`,
+      method: "GET",
+      dataType: "jsonp"
+    })
+  }
+
+  function putPathOnMap(trackPoints){
+    console.log(trackPoints[400]["x"])
+    //console.log(trackPoints);
+    var setSize = Math.floor(trackPoints.length/4);
+    //console.log(setSize);
+
+    for (var i = 3; i < trackPoints.length; i+=setSize) {
+      var waypoints = [];
+      if(i < trackPoints.length - setSize){
+        var lastIndex = trackPoints.length - 1;
+
+        var origin = {
+          lat:trackPoints[i].x,
+          lng: trackPoints[i].y
+        }
+        var destination = {
+          lat: trackPoints[i+setSize].x ,
+          lng: trackPoints[i+setSize].y
+        }
+        for (var j = i+150 ; j < i + setSize; j+= Math.floor((setSize/6))) {
+
+          waypoints.push({
+            location: new google.maps.LatLng(trackPoints[j]["x"], trackPoints[j]['y']),
+            stopover:false
+          })
+        }
+
+        createAndAppendSubRoute(origin, destination, waypoints);
+      }
+    }
+  }
+
+  function createAndAppendSubRoute(origin, destination, waypoints){
+    console.log(waypoints)
+    mapObj.directionsService.route({
+      origin: origin,
+      destination: destination,
+      waypoints: waypoints,
+      optimizeWaypoints: true,
+      travelMode: 'BICYCLING'
+    }, function(response){
+      mapObj.directionsDisplay.setDirections(response);
+    });
+
+  }
+
+  function latLongObject(routeObject){
+    var locations = [];
+    for (var route of routeObject) {
+      locations.push(
+      {
+        "lat": route.first_lat,
+        "lng": route.first_lng
+      });
+    }
+    return locations
+
+  }
+
+
+
+
+
+
 }
 
+// End of onload
 
-function initMap(firstLat ,firstLong, locations) {
-  var myLatLng = {lat: firstLat, lng: firstLong};
-  var labelIndex = 0;
-  var map = new google.maps.Map(document.getElementById('map'), {
-    center: myLatLng,
-    zoom: 12
-  });
 
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    title: 'Hello World!'
-  });
-  // var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  // var markers = locations.map(function(location, i) {
-  //         return new google.maps.Marker({
-  //           position: location,
-  //           label: labels[i % labels.length]
-  //         });
-  //       });
 
-}
+
+
+//document.getElementById('search-button').addEventListener('click', checkSearchValue);
+// function passInParams(parameters){
+//   var location = parameters.location;
+//   var distance = parameters.distance;
+//   var elevGain = parameters.elevgain;
+//   var elevMin = parameters.elevmin;
+//   //console.log(location, distance, elevGain, elevMin);
+//   // if(!location){
+//
+//
+//   // }
+// }
