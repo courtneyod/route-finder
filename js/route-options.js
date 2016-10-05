@@ -7,20 +7,23 @@ window.onload = function() {
 
   function init(){
     var userInput = getQueryParams();
-    addValuesToInput(userInput.location, userInput.distance, userInput.elevGain, userInput.elevMin);
-    var routesPromise = getMatchingRoutes(userInput.location, userInput.distance, userInput.elevGain, userInput.elevMin);
+    addValuesToInput(userInput.location, userInput.milerange, userInput.distance, userInput.elevgain, userInput.elevmin);
+
+    var routesPromise = getMatchingRoutes(userInput.location, userInput.milerange, userInput.distance, userInput.elevgain, userInput.elevmin);
 
     routesPromise.done(function(data){
       var routeOptions = data.results;
+      console.log(routeOptions)
       var friendlyRouteObjects = mapRoutesToFriendlyObjects(routeOptions);
 
-      renderRideOptions(friendlyRouteObjects.routeContainerObj);
+      geoCodeLatLong(friendlyRouteObjects.routeContainerObj);
 
       var centerLat = friendlyRouteObjects.routeContainerObj[0].first_lat;
       var centerLong = friendlyRouteObjects.routeContainerObj[0].first_lng;
 
       var firstLatLongArrayForRides = latLongObject(friendlyRouteObjects.routeContainerObj)
       mapObj = initMap(centerLat, centerLong, firstLatLongArrayForRides);
+      //renderRideOptions(routeContainerObj[i], routeContainerObjLength)
 
     });
  }
@@ -39,10 +42,12 @@ window.onload = function() {
     return vars;
   }
 
+  function addValuesToInput(location, mileRange, distance, elevGain, elevMin){
 
-  function addValuesToInput(location, distance, elevGain, elevMin){
     var inputLocation = document.getElementsByClassName("route-options-location")[0];
     inputLocation.value = location;
+    var inputMileRange = document.getElementsByClassName("route-options-mile-range")[0];
+    inputMileRange.value = mileRange;
     var inputDistance = document.getElementsByClassName("route-options-distance")[0];
     inputDistance.value = distance;
     var inputElevGain = document.getElementsByClassName("route-options-elev-gain")[0];
@@ -51,9 +56,9 @@ window.onload = function() {
     inputElevMin.value = elevMin;
   }
 
-  function getMatchingRoutes(location, distance, elevGain, elevMin) {
+  function getMatchingRoutes(location, mileRange, distance, elevGain, elevMin) {
     return $.ajax({
-      url:  `https://ridewithgps.com/find/search.js?search%5Bkeywords%5D=&search%5Bstart_location%5D=San+Francisco%2C+CA&search%5Bstart_distance%5D=${distance}&search%5Belevation_max%5D=${elevGain}&search%5Belevation_min%5D=${elevMin}&search%5Blength_max%5D=1200&search%5Blength_min%5D=50&search%5Boffset%5D=0&search%5Blimit%5D=20&search%5Bsort_by%5D=length+des`,
+      url:  `https://ridewithgps.com/find/search.js?search%5Bkeywords%5D=&search%5Bstart_location%5D=San+Francisco%2C+CA&search%5Bstart_distance%5D=${mileRange}&search%5Belevation_max%5D=${elevGain}&search%5Belevation_min%5D=${elevMin}&search%5Blength_max%5D=${distance}&search%5Blength_min%5D=50&search%5Boffset%5D=0&search%5Blimit%5D=20&search%5Bsort_by%5D=length+des`,
       method: "GET",
       dataType: "jsonp"
     })
@@ -64,12 +69,15 @@ window.onload = function() {
   var mapRoutesToFriendlyObjects = function(routeOptions) {
     var routeIdArray = [];
     var routeContainerObj = [];
+    console.log(routeOptions[2].elevation_gain)
+
     for (var i = 0; i < routeOptions.length; i++) {
       if(routeOptions[i].type === "trip"){
         routeIdArray.push(routeOptions[i].trip.route_id);
 
         routeContainerObj.push({
           "ids": routeOptions[i].trip.route_id,
+          "cityAndState": undefined,
           "distance": routeOptions[i].trip.distance,
           "elevation_gain": routeOptions[i].trip.elevation_gain,
           "elevation_loss": routeOptions[i].trip.elevation_loss,
@@ -88,6 +96,7 @@ window.onload = function() {
 
         routeContainerObj.push({
           "ids": routeOptions[i].route.id,
+          "cityAndState": undefined,
           "distance": routeOptions[i].route.distance,
           "elevation_gain": routeOptions[i].route.elevation_gain,
           "elevation_loss": routeOptions[i].route.elevation_loss,
@@ -102,7 +111,7 @@ window.onload = function() {
         });
       }
     }
-
+    renderRideOptions(routeContainerObj, routeContainerObj.length)
     return {
       routeContainerObj,
       routeIdArray
@@ -110,12 +119,43 @@ window.onload = function() {
 
   };
 
-  function renderRideOptions(routeObject){
+  function geoCodeLatLong(routeContainerObj){
+    var routeContainerObjLength = routeContainerObj.length;
+
+    for (var i = 0; i < routeContainerObj.length - 1 ; i++) {
+        let lat;
+        let lng;
+        lat = routeContainerObj[i].first_lat;
+        lng = routeContainerObj[i].first_lng;
+        //console.log(lat, lng)
+        // console.log(typeof lat.toFixed(3))
+        // var latlng = {lat: parseFloat(lat.toFixed(3)), lng: parseFloat(lng.toFixed(3))};
+        //console.log(lat, lng)
+        // var geocoder = new google.maps.Geocoder;
+        //var latlng = new google.maps.LatLng(lat, lng);
+        // ajax with lat long interpolated into query string
+       $.ajax({
+          url:  `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyC_9ywy5CNyw82GhC8N3b-7vRgkp-Dpmac`,
+          method: "GET"
+        })
+        .done(function(data){
+          let formatedAddress = data.results[0].formatted_address;
+          routeContainerObj[i].cityAndState = ((formatedAddress).substring(0, formatedAddress.length - 15));
+          //console.log(routeContainerObj[i])
+          renderRideOptions(routeContainerObj[i], routeContainerObjLength)
+        })
+    }
+  }
+    // console.log(routeContainerObj)
+
+
+
+  function renderRideOptions(routeObject, routeContainerObjLength){
 
     // add click handler that then calls: displayRouteOnMap (pass in routeId for a card)
 
     var resultsContainer = document.getElementsByClassName('number-of-results-container')[0];
-    resultsContainer.innerHTML = routeObject.length + " routes match";
+    resultsContainer.innerHTML = routeContainerObjLength + " routes match";
 
     var rideDetails = document.getElementsByClassName('ride-details')[0];
 
@@ -137,17 +177,20 @@ window.onload = function() {
       rideDetails.appendChild(col);
       col.appendChild(card);
 
-      headline.innerHTML = "City " + route.city + ", " + route.state;
+      headline.innerHTML = route.cityAndState;
       card.appendChild(headline);
 
       cardMile.innerHTML = ((route.distance)*(0.000621)).toFixed(1) + " mi";
       card.appendChild(cardMile);
 
+      //console.log(route.elevation_gain)
       cardElevGain.innerHTML = ((route.elevation_gain)*(3.2808399)).toFixed(1) + " ft";
       card.appendChild(cardElevGain);
 
-      duration.innerHTML = route.duration + " estimated time";
-      card.appendChild(duration);
+      if(route.duration !== undefined && route.duration !== null){
+        duration.innerHTML = route.duration + " estimated ride time";
+        card.appendChild(duration);
+      }
 
       createClickEventForEachCard('click', card);
     }
@@ -156,8 +199,14 @@ window.onload = function() {
 
   function createClickEventForEachCard(eventName, element){
     element.addEventListener(eventName, function(event) {
+      var removeInnerShadow = document.getElementsByClassName('inner-shadow');
+      console.log(removeInnerShadow)
+      if(removeInnerShadow.length > 0){
+        removeInnerShadow[0].className = 'result-card-container';
+      }
       var routeId = event.currentTarget.id;
-      console.log(routeId, "this is the route id")
+      event.currentTarget.parentElement.className += ' inner-shadow';
+      //console.log(routeId, "this is the route id")
       displayRouteOnMap(routeId);
     });
   }
@@ -168,23 +217,34 @@ window.onload = function() {
     var labelIndex = 0;
     var map = new google.maps.Map(document.getElementById('map'), {
       center: myLatLng,
-      zoom: 12
+      zoom: 10,
+      mapTypeControl: true,
+          mapTypeControlOptions: {
+              style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+              position: google.maps.ControlPosition.TOP_CENTER
+          },
+          zoomControl: true,
+          zoomControlOptions: {
+              position: google.maps.ControlPosition.RIGHT_TOP
+          },
+          scaleControl: true,
+          streetViewControl: true,
+          streetViewControlOptions: {
+              position: google.maps.ControlPosition.LEFT_TOP
+          },
+          fullscreenControl: true
     });
 
-    // var marker = new google.maps.Marker({
-    //   position: myLatLng,
-    //   map: map,
-    //   title: 'Hello World!'
-    // });
 
-    var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    var markers = locations.map(function(location, i) {
-            return new google.maps.Marker({
-              position: location,
-              label: labels[i % labels.length]
-            });
-          });
-    //
+
+    // var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    // var markers = locations.map(function(location, i) {
+    //         return new google.maps.Marker({
+    //           position: location,
+    //           label: labels[i % labels.length]
+    //         });
+    //       });
+    // //
     // var bikeLayer = new google.maps.BicyclingLayer();
     // bikeLayer.setMap(map);
 
@@ -202,8 +262,11 @@ window.onload = function() {
 
 
   function displayRouteOnMap(routeId){
+    //console.log(routeId)
     var routeDetailsPromise = getRouteDetails(routeId);
+    console.log(routeDetailsPromise)
     routeDetailsPromise.done(function(data){
+      //console.log(data.track_points)
       putPathOnMap(data.track_points)
     });
   }
@@ -218,47 +281,99 @@ window.onload = function() {
   }
 
   function putPathOnMap(trackPoints){
-    console.log(trackPoints[400]["x"])
+    var firstLatLongMaker = {lat:trackPoints[3].y,  lng: trackPoints[3].x}
+    //console.log(trackPoints[3]["y"], trackPoints[3]["x"]);
     //console.log(trackPoints);
-    var setSize = Math.floor(trackPoints.length/4);
+    //var setSize = Math.floor(trackPoints.length/4);
     //console.log(setSize);
 
-    for (var i = 3; i < trackPoints.length; i+=setSize) {
-      var waypoints = [];
-      if(i < trackPoints.length - setSize){
-        var lastIndex = trackPoints.length - 1;
-
-        var origin = {
-          lat:trackPoints[i].x,
-          lng: trackPoints[i].y
-        }
-        var destination = {
-          lat: trackPoints[i+setSize].x ,
-          lng: trackPoints[i+setSize].y
-        }
-        for (var j = i+150 ; j < i + setSize; j+= Math.floor((setSize/6))) {
-
-          waypoints.push({
-            location: new google.maps.LatLng(trackPoints[j]["x"], trackPoints[j]['y']),
-            stopover:false
+    //for (var i = 3; i < trackPoints.length; i+=setSize) {
+    //   var waypoints = [];
+    //   if(i < trackPoints.length - setSize){
+    //     var lastIndex = trackPoints.length - 1;
+    //
+    //     var origin = {
+    //       lat:trackPoints[i].y,
+    //       lng: trackPoints[i].x
+    //     }
+    //     var destination = {
+    //       lat: trackPoints[i+setSize].y ,
+    //       lng: trackPoints[i+setSize].x
+    //     }
+    //     for (var j = i+150 ; j < i + setSize; j+= Math.floor((setSize/6))) {
+    //
+    //       waypoints.push({
+    //         location: new google.maps.LatLng(trackPoints[j]["y"], trackPoints[j]['x']),
+    //         stopover:false
+    //       })
+    //     }
+    //     //console.log(waypoints)
+    //
+    //     createAndAppendSubRoute(origin, destination, waypoints);
+    //     debugger
+    //   }
+    // }
+    var paths = [];
+    //console.log(paths)
+    for (var i = 3; i < trackPoints.length; i++) {
+      if (trackPoints[i].y !== undefined && trackPoints[i].x !== undefined){
+        paths.push({
+            lat:trackPoints[i].y,
+            lng: trackPoints[i].x
           })
         }
-
-        createAndAppendSubRoute(origin, destination, waypoints);
-      }
-    }
   }
+  createAndAppendSubRoute(firstLatLongMaker, paths)
+}
 
-  function createAndAppendSubRoute(origin, destination, waypoints){
-    console.log(waypoints)
-    mapObj.directionsService.route({
-      origin: origin,
-      destination: destination,
-      waypoints: waypoints,
-      optimizeWaypoints: true,
-      travelMode: 'BICYCLING'
-    }, function(response){
-      mapObj.directionsDisplay.setDirections(response);
+
+  function createAndAppendSubRoute(firstLatLongMaker, paths){
+    //console.log(waypoints)
+    // mapObj.directionsService.route({
+    //   origin: origin,
+    //   destination: destination,
+    //   waypoints: waypoints,
+    //   optimizeWaypoints: true,
+    //   travelMode: 'BICYCLING'
+    // }, function(response){
+    //   mapObj.directionsDisplay.setDirections(response);
+    // });
+    // var request = {
+    //   origin: origin,
+    //   destination: destination,
+    //   waypoints: waypoints,
+    //   optimizeWaypoints: true,
+    //   travelMode: 'BICYCLING'
+    // }
+    // mapObj.directionsService.route(request, function(response, status) {
+    //     if (status === google.maps.DirectionsStatus.OK) {
+    //         mapObj.directionsDisplay.setDirections(response);
+    //     } else  {
+    //      console.log("error from google");
+    //  }
+    // });
+
+    var bikeRouteDirections = new google.maps.Polygon({
+      paths: paths,
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.0000001
+  });
+
+    // bikeRouteDirections.setMap(null);
+
+    addLine();
+
+    function addLine() {
+      bikeRouteDirections.setMap(mapObj.map);
+      }
+
+    var marker = new google.maps.Marker({
+      position: firstLatLongMaker,
+      map: mapObj.map,
+      title: 'Hello World!'
     });
 
   }
@@ -282,6 +397,7 @@ window.onload = function() {
 
 
 }
+
 
 // End of onload
 

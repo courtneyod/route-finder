@@ -27,26 +27,42 @@
     </nav>
   </div>
   <main class="main-container">
+    <div class="top-panel">
+      <form action="">
+        <label class="route-options-label" for="location">Location
+          <input class="route-input route-options-location" type="text" placeholder="Location" id="location" name="location" required />
+        </label>
+        <div class="input-group select-group route-options-select-wrapper">
+          <label class="route-options-select-label" for="mile-range">Within
+            <select name="milerange" class="route-options-mile-range" id="mile-range">
+                <option value="5-miles">5 miles</option>
+                <option value="10">10 miles</option>
+                <option value="15">15 miles</option>
+                <option value="20">20 miles</option>
+                <option value="25">25 miles</option>
+                <option value="30">30 miles</option>
+                <option value="35">35 miles</option>
+                <option value="40">40 miles</option>
+                <option value="45">45 miles</option>
+                <option value="50">50 miles</option>
+              </select>
+          </label>
+        </div>
+        <label class="route-options-label" for="distance">Distance
+          <input class="route-input route-options-distance" type="text" placeholder="Max Distance" id="distance" name="distance" />
+        </label>
+        <label class="route-options-label" for="elev-gain">Elevation Gain
+          <input class="route-input route-options-elev-gain" type="number" placeholder="Max Elevation Gain" id="elev-gain" name="elevgain" />
+        </label>
+        <label class="route-options-label" for="elev-min">Elevation Min
+          <input class="route-input route-options-elev-min" type="number" placeholder="Min Elevation Gain" id="elev-min" name="elevmin" />
+        </label>
+        <div class="button">
+          <img class="button-img" src="./img/Search_Dark.png" alt="">
+        </div>
+      </form>
+    </div>
     <div class="route-container">
-      <div class="top-panel">
-        <form action="">
-          <label for="location">Location
-            <input class="route-input route-options-location" type="text" placeholder="Location" id="location" name="location" required />
-          </label>
-          <label for="distance">Distance
-            <input class="route-input route-options-distance" type="text" placeholder="Max Distance" id="distance" name="distance" />
-          </label>
-          <label for="elev-gain">Elevation Gain
-            <input class="route-input route-options-elev-gain" type="number" placeholder="Max Elevation Gain" id="elev-gain" name="elevgain" />
-          </label>
-          <label for="elev-min">Elevation Min
-            <input class="route-input route-options-elev-min" type="number" placeholder="Min Elevation Gain" id="elev-min" name="elevmin" />
-          </label>
-          <div class="button">
-            <img class="button-img" src="./img/Search_Dark.png" alt="">
-          </div>
-        </form>
-      </div>
       <div class="search-results-container">
         <div id="num-results-container" class="number-of-results-container">
 

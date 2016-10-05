@@ -37,18 +37,42 @@
         <div class="input-wrapper">
           <div class="input-field">
             <fieldset class="user-inputs">
-              <label for="location">Location
+              <div class="input-group">
+                <label class="homepage-label" for="location">Location
+                </label>
                 <input class="user-input-homepage" type="text" placeholder="Location" id="location" name="location" required />
-              </label>
-              <label for="distance">Distance
+              </div>
+              <div class="input-group select-group">
+                <label class="homepage-label" class="show-label-text" for="mile-range">Within
+                  <select name="milerange" class="select-mile-range" id="mile-range">
+                      <option value="5-miles">5 miles</option>
+                      <option value="10">10 miles</option>
+                      <option value="15">15 miles</option>
+                      <option value="20">20 miles</option>
+                      <option value="25">25 miles</option>
+                      <option value="30">30 miles</option>
+                      <option value="35">35 miles</option>
+                      <option value="40">40 miles</option>
+                      <option value="45">45 miles</option>
+                      <option value="50">50 miles</option>
+                    </select>
+                </label>
+              </div>
+              <div class="input-group">
+                <label class="homepage-label" for="distance">Distance
+                </label>
                 <input class="user-input-homepage" type="text" placeholder="Max Distance" id="distance" name="distance" />
-              </label>
-              <label for="elev-gain">Elevation Gain
+              </div>
+              <div class="input-group">
+                <label class="homepage-label" for="elev-gain">Elevation Gain
+                </label>
                 <input class="user-input-homepage" type="number" placeholder="Max Elevation Gain" id="elev-gain" name="elevgain" />
-              </label>
-              <label for="elev-min">Elevation Min
+              </div>
+              <div class="input-group">
+                <label class="homepage-label" for="elev-min">Elevation Min
+                </label>
                 <input class="user-input-homepage" type="number" placeholder="Min Elevation Gain" id="elev-min" name="elevmin" />
-              </label>
+              </div>
             </fieldset>
           </div>
         </div>
