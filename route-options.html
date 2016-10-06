@@ -26,15 +26,15 @@
       </div>
     </nav>
   </div>
-  <main class="main-container">
+  <main class="main-container" id="route-page-container">
     <div class="top-panel">
-      <form action="">
+      <form class="top-panel-form" action="route-options.html" method="GET">
         <label class="route-options-label" for="location">Location
-          <input class="route-input route-options-location" type="text" placeholder="Location" id="location" name="location" required />
+          <input class="route-options-location route-input" type="text" placeholder="Location" id="locations" name="location" required />
         </label>
         <div class="input-group select-group route-options-select-wrapper">
-          <label class="route-options-select-label" for="mile-range">Within
-            <select name="milerange" class="route-options-mile-range" id="mile-range">
+          <label class="route-options-select-label route-options-label" for="mile-range">Within
+            <select name="milerange" class="route-options-mile-range route-input" id="mile-range-options">
                 <option value="5-miles">5 miles</option>
                 <option value="10">10 miles</option>
                 <option value="15">15 miles</option>
@@ -48,8 +48,11 @@
               </select>
           </label>
         </div>
-        <label class="route-options-label" for="distance">Distance
-          <input class="route-input route-options-distance" type="text" placeholder="Max Distance" id="distance" name="distance" />
+        <label class="route-options-label" for="mindistance">Min Distance
+          <input class="route-input route-options-mindistance" type="text" placeholder="Max Distance" id="mindistance" name="mindistance" />
+        </label>
+        <label class="route-options-label" for="maxdistance">Max Distance
+          <input class="route-input route-options-maxdistance" type="text" placeholder="Max Distance" id="maxdistance" name="maxdistance" />
         </label>
         <label class="route-options-label" for="elev-gain">Elevation Gain
           <input class="route-input route-options-elev-gain" type="number" placeholder="Max Elevation Gain" id="elev-gain" name="elevgain" />
@@ -58,7 +61,9 @@
           <input class="route-input route-options-elev-min" type="number" placeholder="Min Elevation Gain" id="elev-min" name="elevmin" />
         </label>
         <div class="button">
+          <button class="btn-small" id="search-button" type="submit" name="action">
           <img class="button-img" src="./img/Search_Dark.png" alt="">
+        </button>
         </div>
       </form>
     </div>
