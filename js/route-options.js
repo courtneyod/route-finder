@@ -2,11 +2,64 @@
 
 window.curBikeLine = null;
 window.marker = null;
+window.elevator = null;
 
 window.onload = function() {
+
+
+ // Loads the modal and appends it to the body
+  (function($) {
+    $.extend({
+      spin: function(spin, opts) {
+
+        if (opts === undefined) {
+          opts = {
+            lines: 13, // The number of lines to draw
+            length: 20, // The length of each line
+            width: 6, // The line thickness
+            radius: 30, // The radius of the inner circle
+            corners: 1, // Corner roundness (0..1)
+            rotate: 0, // The rotation offset
+            direction: 1, // 1: clockwise, -1: counterclockwise
+            color: '#000', // #rgb or #rrggbb or array of colors
+            speed: 1, // Rounds per second
+            trail: 56, // Afterglow percentage
+            shadow: false, // Whether to render a shadow
+            hwaccel: false, // Whether to use hardware acceleration
+            className: 'spinner', // The CSS class to assign to the spinner
+            zIndex: 2e9, // The z-index (defaults to 2000000000)
+            top: '70%', // Top position relative to parent
+            left: '50%' // Left position relative to parent
+          };
+        }
+
+        var data = $('body').data();
+
+        if (data.spinner) {
+          data.spinner.stop();
+          delete data.spinner;
+          $("#spinner_modal").remove();
+          return this;
+        }
+
+        if (spin) {
+
+          var spinElem = this;
+
+          $('body').append('<div id="spinner_modal" style="background-color: rgba(0, 0, 0, 0.3); width:100%; height:100%; position:fixed; top:0px; left:0px; z-index:' + (opts.zIndex - 1) + '"/>');
+          spinElem = $("#spinner_modal")[0];
+
+          data.spinner = new Spinner($.extend({
+            color: $('body').css('color')
+          }, opts)).spin(spinElem);
+        }
+
+      }
+    });
+  })(jQuery);
+
   var mapObj;
   init();
-
 
   function init(){
     var userInput = getQueryParams();
@@ -15,8 +68,8 @@ window.onload = function() {
     var routesPromise = getMatchingRoutes(userInput.location, userInput.milerange, userInput.maxdistance, userInput.mindistance, userInput.elevgain, userInput.elevmin);
 
     routesPromise.done(function(data){
+      $.spin('false');
       var routeOptions = data.results;
-
       var friendlyRouteObjects = mapRoutesToFriendlyObjects(routeOptions);
 
       geoCodeLatLong(friendlyRouteObjects.routeContainerObj);
@@ -26,7 +79,6 @@ window.onload = function() {
 
       var firstLatLongArrayForRides = latLongObject(friendlyRouteObjects.routeContainerObj)
       mapObj = initMap(centerLat, centerLong, firstLatLongArrayForRides);
-      //renderRideOptions(routeContainerObj[i], routeContainerObjLength)
 
     });
  }
@@ -51,7 +103,6 @@ window.onload = function() {
     location = location.substring(0, location.length - 20)
     location = location.replace(/%2C/gi,",")
     location = location.replace(/[^\w\s]/gi," ")
-    console.log(location)
     inputLocation.value = location;
     var inputMileRange = document.getElementsByClassName("route-options-mile-range")[0];
     inputMileRange.value = mileRange;
@@ -70,7 +121,11 @@ window.onload = function() {
     return $.ajax({
       url:  `https://ridewithgps.com/find/search.js?search%5Bkeywords%5D=&search%5Bstart_location%5D=${location}&search%5Bstart_distance%5D=${mileRange}&search%5Belevation_max%5D=${elevGain}&search%5Belevation_min%5D=${elevMin}&search%5Blength_max%5D=${maxdistance}&search%5Blength_min%5D=${mindistance}&search%5Boffset%5D=0&search%5Blimit%5D=20&search%5Bsort_by%5D=length+des`,
       method: "GET",
-      dataType: "jsonp"
+      dataType: "jsonp",
+      beforeSend: function(xhr) {
+      $("#baconIpsumOutput").html('');
+      $.spin('true');
+      }
     })
   }
 
@@ -80,7 +135,6 @@ window.onload = function() {
   var mapRoutesToFriendlyObjects = function(routeOptions) {
     var routeIdArray = [];
     var routeContainerObj = [];
-    //console.log(routeOptions[2].elevation_gain)
 
     for (var i = 0; i < routeOptions.length; i++) {
       if(routeOptions[i].type === "trip"){
@@ -122,7 +176,6 @@ window.onload = function() {
         });
       }
     }
-    //renderRideOptions(routeContainerObj, routeContainerObj.length)
     return {
       routeContainerObj,
       routeIdArray
@@ -132,19 +185,14 @@ window.onload = function() {
 
   function geoCodeLatLong(routeContainerObj){
     var routeContainerObjLength = routeContainerObj.length;
+    console.log(routeContainerObj.length);
 
     for (let i = 0; i < routeContainerObj.length - 1 ; i++) {
         let lat;
         let lng;
         lat = routeContainerObj[i].first_lat;
         lng = routeContainerObj[i].first_lng;
-        //console.log(lat, lng)
-        // console.log(typeof lat.toFixed(3))
-        // var latlng = {lat: parseFloat(lat.toFixed(3)), lng: parseFloat(lng.toFixed(3))};
-        //console.log(lat, lng)
-        // var geocoder = new google.maps.Geocoder;
-        //var latlng = new google.maps.LatLng(lat, lng);
-        // ajax with lat long interpolated into query string
+
        $.ajax({
           url:  `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyC_9ywy5CNyw82GhC8N3b-7vRgkp-Dpmac`,
           method: "GET"
@@ -152,12 +200,11 @@ window.onload = function() {
         .done(function(data){
           let formatedAddress = data.results[0].formatted_address;
           routeContainerObj[i].cityAndState = ((formatedAddress).substring(0, formatedAddress.length - 15));
-          //console.log(routeContainerObj[i])
+          //console.log(routeContainerObjLength)
           renderRideOptions(routeContainerObj[i], routeContainerObjLength)
         })
     }
   }
-    // console.log(routeContainerObj)
 
 
 
@@ -165,7 +212,8 @@ window.onload = function() {
 
     // add click handler that then calls: displayRouteOnMap (pass in routeId for a card)
 
-    var resultsContainer = document.getElementsByClassName('number-of-results-container')[0];
+    var resultsContainer = document.getElementById('num-results-container');
+    resultsContainer.className = "num-results-container"
     resultsContainer.innerHTML = routeContainerObjLength + " routes match";
 
     var rideDetails = document.getElementsByClassName('ride-details')[0];
@@ -194,7 +242,6 @@ window.onload = function() {
       cardMile.innerHTML = ((route.distance)*(0.000621)).toFixed(1) + " mi";
       card.appendChild(cardMile);
 
-      //console.log(route.elevation_gain)
       cardElevGain.innerHTML = ((route.elevation_gain)*(3.2808399)).toFixed(1) + " ft";
       card.appendChild(cardElevGain);
 
@@ -262,10 +309,8 @@ window.onload = function() {
 
 
   function displayRouteOnMap(routeId){
-    //console.log(routeId)
     var routeDetailsPromise = getRouteDetails(routeId);
     routeDetailsPromise.done(function(data){
-      //console.log(data.track_points)
       putPathOnMap(data.track_points)
     });
   }
@@ -280,119 +325,110 @@ window.onload = function() {
   };
 
   function putPathOnMap(trackPoints){
-    var firstLatLongMaker = {lat:trackPoints[3].y,  lng: trackPoints[3].x}
-    var lastLatLongMaker = {lat:trackPoints[trackPoints.length-1].y,  lng: trackPoints[trackPoints.length-1].x}
-    //console.log(trackPoints[3]["y"], trackPoints[3]["x"]);
-    //console.log(trackPoints);
-    //var setSize = Math.floor(trackPoints.length/4);
-    //console.log(setSize);
-
-    //for (var i = 3; i < trackPoints.length; i+=setSize) {
-    //   var waypoints = [];
-    //   if(i < trackPoints.length - setSize){
-    //     var lastIndex = trackPoints.length - 1;
-    //
-    //     var origin = {
-    //       lat:trackPoints[i].y,
-    //       lng: trackPoints[i].x
-    //     }
-    //     var destination = {
-    //       lat: trackPoints[i+setSize].y ,
-    //       lng: trackPoints[i+setSize].x
-    //     }
-    //     for (var j = i+150 ; j < i + setSize; j+= Math.floor((setSize/6))) {
-    //
-    //       waypoints.push({
-    //         location: new google.maps.LatLng(trackPoints[j]["y"], trackPoints[j]['x']),
-    //         stopover:false
-    //       })
-    //     }
-    //     //console.log(waypoints)
-    //
-    //     createAndAppendSubRoute(origin, destination, waypoints);
-    //     debugger
-    //   }
-    // }
-
     var paths = [];
-    //console.log(paths)
+    var firstLatLongMaker = {lat:trackPoints[3].y,  lng: trackPoints[3].x}
+    var lastLatLongMaker = {lat:trackPoints[trackPoints.length-1].y,  lng: trackPoints[trackPoints.length-1].x};
+
     for (var i = 3; i < trackPoints.length-4; i++) {
       if (trackPoints[i].y !== undefined && trackPoints[i].x !== undefined){
-        // paths.push({
-        //     lat:trackPoints[i].y,
-        //     lng: trackPoints[i].x
-        //   });
-        paths.push( new google.maps.LatLng(trackPoints[i].y, trackPoints[i].x))
+        paths.push({
+            lat:trackPoints[i].y,
+            lng: trackPoints[i].x
+          });
+        // paths.push( new google.maps.LatLng(trackPoints[i].y, trackPoints[i].x))
         }
   }
-  console.log(paths);
   createAndAppendSubRoute(firstLatLongMaker, lastLatLongMaker, paths);
 }
 
 
   function createAndAppendSubRoute(firstLatLongMaker, lastLatLongMaker, paths){
-    //console.log(waypoints)
-    // mapObj.directionsService.route({
-    //   origin: origin,
-    //   destination: destination,
-    //   waypoints: waypoints,
-    //   optimizeWaypoints: true,
-    //   travelMode: 'BICYCLING'
-    // }, function(response){
-    //   mapObj.directionsDisplay.setDirections(response);
-    // });
-    // var request = {
-    //   origin: origin,
-    //   destination: destination,
-    //   waypoints: waypoints,
-    //   optimizeWaypoints: true,
-    //   travelMode: 'BICYCLING'
-    // }
-    // mapObj.directionsService.route(request, function(response, status) {
-    //     if (status === google.maps.DirectionsStatus.OK) {
-    //         mapObj.directionsDisplay.setDirections(response);
-    //     } else  {
-    //      console.log("error from google");
-    //  }
-    // });
+    // Load the Visualization API and the columnchart package.
+
+    google.load('visualization', '1', {callback: 'console.log("working")', packages: ['columnchart']});
 
     if(window.curBikeLine !== null){
       window.curBikeLine.setMap(null);
       window.marker.setMap(null);
       window.lastMarker.setMap(null);
     }
-    console.log(paths)
-    window.curBikeLine = new google.maps.Polyline({
-      path: paths,
-      strokeColor: '#fc4c02',
-      strokeOpacity: 0.8,
-      strokeWeight: 3,
-      geodesic: true
-    });
 
-    console.log(window.curBikeLine)
     addLine();
 
     function addLine() {
+      window.curBikeLine = new google.maps.Polyline({
+        path: paths,
+        strokeColor: '#fc4c02',
+        strokeOpacity: 0.8,
+        strokeWeight: 3,
+        geodesic: true
+      });
       window.curBikeLine.setMap(mapObj.map);
+
+      window.elevator = new google.maps.ElevationService;
+      console.log(window.elevator)
+
+      window.elevator.getElevationAlongPath({
+         path: paths,
+         samples: 10
+       }, plotElevation);
       }
 
-    window.marker = new google.maps.Marker({
-      position: firstLatLongMaker,
-      label: "A",
-      map: mapObj.map,
-      title: 'Hello World!'
-    });
-    window.lastMarker = new google.maps.Marker({
-      position: lastLatLongMaker,
-      label: "B",
-      map: mapObj.map,
-      title: 'Last marker!'
-    });
-    mapObj.map.setCenter(window.marker.getPosition())
+    addMarkers()
+
+    function addMarkers(){
+      window.marker = new google.maps.Marker({
+        position: firstLatLongMaker,
+        label: "A",
+        map: mapObj.map,
+        title: 'Hello World!'
+      });
+      window.lastMarker = new google.maps.Marker({
+        position: lastLatLongMaker,
+        label: "B",
+        map: mapObj.map,
+        title: 'Last marker!'
+      });
+      mapObj.map.setCenter(window.marker.getPosition())
+    }
 
     return window.curBikeLine;
   }
+
+  function plotElevation(elevations, status){
+
+    var chartDiv = document.getElementById('elevation_chart');
+    console.log(chartDiv)
+        if (status !== 'OK') {
+          chartDiv.className = "hide-chart-error"
+          // Show the error code inside the chartDiv.
+          chartDiv.innerHTML = 'Cannot show elevation: request failed because ' +
+              status;
+          return;
+        }
+        // Create a new chart in the elevation_chart DIV.
+        var chart = new google.visualization.ColumnChart(chartDiv);
+        console.log(chart)
+
+        // Extract the data from which to populate the chart.
+        // Because the samples are equidistant, the 'Sample'
+        // column here does double duty as distance along the
+        // X axis.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Sample');
+        data.addColumn('number', 'Elevation');
+        for (var i = 0; i < elevations.length; i++) {
+          data.addRow(['', elevations[i].elevation]);
+        }
+
+        // Draw the chart using the data within its DIV.
+        chart.draw(data, {
+          height: 150,
+          legend: 'none',
+          titleY: 'Elevation (m)'
+        });
+      }
+
 
   function latLongObject(routeObject){
     var locations = [];
@@ -406,9 +442,6 @@ window.onload = function() {
     return locations
 
   }
-
-
-
 
 
 
