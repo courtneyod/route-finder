@@ -416,20 +416,3 @@ window.onload = function() {
 
 
 // End of onload
-
-
-
-
-
-//document.getElementById('search-button').addEventListener('click', checkSearchValue);
-// function passInParams(parameters){
-//   var location = parameters.location;
-//   var distance = parameters.distance;
-//   var elevGain = parameters.elevgain;
-//   var elevMin = parameters.elevmin;
-//   //console.log(location, distance, elevGain, elevMin);
-//   // if(!location){
-//
-//
-//   // }
-// }
