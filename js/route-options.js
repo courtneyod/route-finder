@@ -5,15 +5,9 @@ window.marker = null;
 window.elevator = null;
 
 window.onload = function() {
-  // Gets the container for the spinner
-// var target = document.getElementById('spinner-container')
-//
-// Creates the spinner and spins it
-// var spinner = new Spinner(opts).spin(target);
 
-// // Stops the spinner
-// spinner.stop();
 
+ // Loads the modal and appends it to the body
   (function($) {
     $.extend({
       spin: function(spin, opts) {
@@ -66,7 +60,6 @@ window.onload = function() {
 
   var mapObj;
   init();
-
 
   function init(){
     var userInput = getQueryParams();
@@ -192,6 +185,7 @@ window.onload = function() {
 
   function geoCodeLatLong(routeContainerObj){
     var routeContainerObjLength = routeContainerObj.length;
+    console.log(routeContainerObj.length);
 
     for (let i = 0; i < routeContainerObj.length - 1 ; i++) {
         let lat;
@@ -206,6 +200,7 @@ window.onload = function() {
         .done(function(data){
           let formatedAddress = data.results[0].formatted_address;
           routeContainerObj[i].cityAndState = ((formatedAddress).substring(0, formatedAddress.length - 15));
+          //console.log(routeContainerObjLength)
           renderRideOptions(routeContainerObj[i], routeContainerObjLength)
         })
     }
