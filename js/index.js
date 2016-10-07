@@ -4,6 +4,8 @@
 google.maps.event.addDomListener(window, 'load', initialize);
 
 function initialize() {
+
+
   var options = {
       types: ['(cities)'],
       componentRestrictions: { country: "us" }

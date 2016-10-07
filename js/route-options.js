@@ -9,6 +9,8 @@ window.onload = function() {
 
  // Loads the modal and appends it to the body
   (function($) {
+
+
     $.extend({
       spin: function(spin, opts) {
 
@@ -133,6 +135,7 @@ window.onload = function() {
 
   // TODO - refactor using .map()
   var mapRoutesToFriendlyObjects = function(routeOptions) {
+    console.log(routeOptions.length)
     var routeIdArray = [];
     var routeContainerObj = [];
 
@@ -185,7 +188,6 @@ window.onload = function() {
 
   function geoCodeLatLong(routeContainerObj){
     var routeContainerObjLength = routeContainerObj.length;
-    console.log(routeContainerObj.length);
 
     for (let i = 0; i < routeContainerObj.length - 1 ; i++) {
         let lat;
@@ -200,7 +202,6 @@ window.onload = function() {
         .done(function(data){
           let formatedAddress = data.results[0].formatted_address;
           routeContainerObj[i].cityAndState = ((formatedAddress).substring(0, formatedAddress.length - 15));
-          //console.log(routeContainerObjLength)
           renderRideOptions(routeContainerObj[i], routeContainerObjLength)
         })
     }
@@ -366,7 +367,6 @@ window.onload = function() {
       window.curBikeLine.setMap(mapObj.map);
 
       window.elevator = new google.maps.ElevationService;
-      console.log(window.elevator)
 
       window.elevator.getElevationAlongPath({
          path: paths,
@@ -398,7 +398,6 @@ window.onload = function() {
   function plotElevation(elevations, status){
 
     var chartDiv = document.getElementById('elevation_chart');
-    console.log(chartDiv)
         if (status !== 'OK') {
           chartDiv.className = "hide-chart-error"
           // Show the error code inside the chartDiv.
@@ -408,7 +407,6 @@ window.onload = function() {
         }
         // Create a new chart in the elevation_chart DIV.
         var chart = new google.visualization.ColumnChart(chartDiv);
-        console.log(chart)
 
         // Extract the data from which to populate the chart.
         // Because the samples are equidistant, the 'Sample'

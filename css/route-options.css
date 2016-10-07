@@ -229,3 +229,30 @@ table {
   overflow: hidden;
 	font-size:0;
 }
+
+
+/* phones ----------- */
+@media only screen and (max-width : 400px) {
+	.search-results-container {
+	  width: 150px;
+	}
+	.num-results-container {
+	  padding: 6px 16px;
+		font-size: 15px;
+	}
+
+	.result-card-container {
+	  padding: 0 11px;
+	}
+
+	.city-state {
+		line-height: 18px;
+		font-size: 13px;
+	}
+
+	.card-details {
+	  font-weight: 300;
+	  padding: 0 0 10px 0;
+	  font-size: 11px;
+	}
+}

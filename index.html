@@ -1,99 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRIiHf8ZLSzIhVTGQoedYNO7pM8UQD6dk&libraries=places" >
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
-  <script src="js/index.js" charset="utf-8"></script>
-  <title>Route Finder</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRIiHf8ZLSzIhVTGQoedYNO7pM8UQD6dk&libraries=places">
+        < script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.js" >
+    </script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="js/index.js" charset="utf-8"></script>
+    <title>Route Finder</title>
 </head>
+
 <body>
-  <div class="navbar-fixed">
-    <nav class="master-nav-head">
-      <div class="nav-wrapper">
-          <img class="nav-content" src="./img/route-finder.png" alt="" />
-          <p class="nav-content nav-copy" ><a class="nav-content" href="index.html">RouteFinder</a></p>
-      </div>
-    </nav>
-  </div>
-  <main class="main-container">
-    <div>
-      <p class="main-headline">
-        Plan Your Route
-      </p>
+    <div class="navbar-fixed">
+        <nav class="master-nav-head">
+            <div class="nav-wrapper">
+                <img class="nav-content" src="./img/route-finder.png" alt="" />
+                <p class="nav-content nav-copy"><a class="nav-content" href="index.html">RouteFinder</a></p>
+            </div>
+        </nav>
     </div>
-    <div class="row form-container">
-      <form class="route-input" action="route-options.html" method="GET">
-        <p class="form-headline">
-          Where would you like to go?
-        </p>
-        <div class="input-wrapper">
-          <div class="input-field">
-            <fieldset class="user-inputs">
-              <div class="input-group">
-                <label class="homepage-label" for="location">Location
-                </label>
-                <input class="user-input-homepage" type="text" placeholder="Location" id="location" name="location" required />
-              </div>
-              <div class="input-group select-group">
-                <label class="homepage-label show-label-text" for="mile-range">Within
-                </label>
-                <select name="milerange" class="select-mile-range" id="mile-range">
-                    <option value="5-miles">5 miles</option>
-                    <option value="10">10 miles</option>
-                    <option value="15">15 miles</option>
-                    <option value="20">20 miles</option>
-                    <option value="25">25 miles</option>
-                    <option value="30">30 miles</option>
-                    <option value="35">35 miles</option>
-                    <option value="40">40 miles</option>
-                    <option value="45">45 miles</option>
-                    <option value="50">50 miles</option>
-                  </select>
-              </div>
-              <div class="input-group">
-                <label class="homepage-label" for="distance">Max Distance
-                </label>
-                <input class="user-input-homepage" type="text" placeholder="Max Distance" id="maxdistance" name="maxdistance" />
-              </div>
-              <div class="input-group">
-                <label class="homepage-label" for="distance">Min Distance
-                </label>
-                <input class="user-input-homepage" type="text" placeholder="Min Distance" id="mindistance" name="mindistance" />
-              </div>
-              <div class="input-group">
-                <label class="homepage-label" for="elev-gain">Elevation Gain
-                </label>
-                <input class="user-input-homepage" type="number" placeholder="Max Elevation Gain" id="elev-gain" name="elevgain" />
-              </div>
-              <div class="input-group">
-                <label class="homepage-label" for="elev-min">Elevation Min
-                </label>
-                <input class="user-input-homepage" type="number" placeholder="Min Elevation Gain" id="elev-min" name="elevmin" />
-              </div>
-            </fieldset>
-          </div>
-        </div>
+    <main class="main-container">
         <div>
-          <!-- <a href="route-options.html"> -->
-            <button class="btn-large waves-effect waves-light" id="search-button" type="submit" name="action">
-            Search</button>
-        <!-- </a> -->
+            <p class="main-headline">
+                Plan Your Route
+            </p>
         </div>
-      </form>
-    </div>
-    <div class="row">
+        <div class="row form-container">
+            <form class="route-input" action="route-options.html" method="GET">
+                <p class="form-headline">
+                    Where would you like to go?
+                </p>
+                <div class="input-wrapper">
+                    <div class="input-field">
+                        <fieldset class="user-inputs">
+                            <div class="input-group">
+                                <label class="homepage-label" for="location">Location </label>
+                                <input class="user-input-homepage" type="text" placeholder="Location" id="location" name="location" required />
+                            </div>
+                            <div class="input-group select-group">
+                              <label class="homepage-label show-label-text" for="mile-range">Within  </label>
+                                <select name="milerange" class="select-mile-range" id="mile-range">
+                                  <option value="5-miles">5 miles</option>
+                                  <option value="10">10 miles</option>
+                                  <option value="15">15 miles</option>
+                                  <option value="20">20 miles</option>
+                                  <option value="25">25 miles</option>
+                                  <option value="30">30 miles</option>
+                                  <option value="35">35 miles</option>
+                                  <option value="40">40 miles</option>
+                                  <option value="45">45 miles</option>
+                                  <option value="50">50 miles</option>
+                                </select>
+                            </div>
 
-    </div>
-    <footer>
+                            <div class="input-group">
+                              <label class="homepage-label" for="distance">Max Distance</label>
+                              <input class="user-input-homepage" type="text" placeholder="Max Distance (mi)" id="maxdistance" name="maxdistance" />
+                            </div>
+                            <div class="input-group">
+                              <label class="homepage-label" for="distance">Min Distance</label>
+                              <input class="user-input-homepage" type="text" placeholder="Min Distance (mi)" id="mindistance" name="mindistance" />
+                            </div>
+                            <div class="input-group">
+                              <label class="homepage-label" for="elev-gain">Max Elevation Gain</label>
+                              <input class="user-input-homepage" type="number" placeholder="Max Elevation Gain (ft)" id="elev-gain" name="elevgain" />
+                            </div>
+                            <div class="input-group">
+                              <label class="homepage-label" for="elev-min">Min Evelation Gain</label>
+                              <input class="user-input-homepage" type="number" placeholder="Min Elevation Gain (ft)" id="elev-min" name="elevmin" />
+                            </div>
+                        </fieldset>
+                        </div>
+                    </div>
+                    <div>
+                        <!-- <a href="route-options.html"> -->
+                        <button class="btn-large waves-effect waves-light" id="search-button" type="submit" name="action">
+            Search</button>
+                        <!-- </a> -->
+                    </div>
+            </form>
+            </div>
+            <div class="row">
 
-    </footer>
+            </div>
+            <footer>
 
-  </main>
+            </footer>
+
+    </main>
 </body>
+
 </html>
