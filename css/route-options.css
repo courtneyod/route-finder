@@ -58,43 +58,6 @@ table {
 	flex-direction: row;
 }
 
-.master-nav-head {
-  /*display: flex;
-  flex-direction: row;
-  justify-content: space-between;*/
-  padding: 10px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  width: 100%;
-}
-
-nav {
-  height: 40px;
-  line-height: 20px;
-  color: #FC4C02;;
-  background-color: #dfdfdf;
-  width: 100%;
-  opacity: 0.8;
-  filter: alpha(opacity=50);
-}
-
-.nav-content {
-  display: inline-block;
-  font-size: 160%;
-	    vertical-align: middle;
-}
-
-.logo{
-	background-image: url("./img/route-finder.png")
-}
-
-.master-nav-head img {
-  width: 3%;
-  padding-left: 2%;
-}
-
 .top-panel {
   background-color: #F1F1F1;
   top: 0;
@@ -104,11 +67,11 @@ nav {
 	z-index: 999;
 	position: absolute;
 	width: 100%;
-	margin-top: 60px;
+	margin-top: 47px;
 }
 
 .route-container {
-	margin-top: 137px;
+	margin-top: 123px;
 	height: 100%;
 	width: 100%;
 }
@@ -132,6 +95,8 @@ nav {
 
 .route-options-select-wrapper {
 	display: inline;
+	position: relative;
+  transform: translateY(-7%);
 }
 .route-input {
   width: 70px;
@@ -175,6 +140,10 @@ nav {
   margin: auto;
 }
 
+.button-route-options {
+	position: relative;
+	transform: translateY(36%);
+}
 .search-results-container {
   width: 350px;
   display: flex;
@@ -192,7 +161,7 @@ nav {
   margin: -14px 0;
 }
 
-.number-of-results-container {
+.num-results-container {
   box-shadow: 2px 2px 2px rgba(0,0,0,0.15);
   padding: 15px 26px;
   background-color: #EBEAE5;
@@ -235,6 +204,13 @@ nav {
 
 #route-page-container {
 	height: 750px;
+}
+
+.hide-chart-error {
+	text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+	font-size:0;
 }
 
 .inner-shadow {

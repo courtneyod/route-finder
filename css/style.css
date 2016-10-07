@@ -44,29 +44,20 @@ table {
 	border-spacing: 0;
 }
 
-.homepage-label {
-  /*text-indent: 100%;
-  white-space: nowrap;
-  overflow: hidden;*/
-  font-size:15px;
-  clip: rect(0, 0, 0, 0);
-	display: inline-block;
-	max-width: 100%;
-	margin-bottom: 7px;
+.nav-bar-fixed {
+	height: 40px;
 }
 
 .master-nav-head {
+	vertical-align: middle;
+	display: table-cell;
   padding: 10px;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 9999;
   width: 100%;
-}
-
-nav {
-  height: 40px;
-  line-height: 20px;
+	line-height: 20px;
   color: #FC4C02;
   background-color: #dfdfdf;
   width: 100%;
@@ -74,14 +65,57 @@ nav {
   filter: alpha(opacity=50);
 }
 
+.nav-wrapper {
+	vertical-align: middle;
+  display: table-cell;
+}
+
 .nav-content {
   display: inline-block;
-  font-size: 160%;
+  font-size: 116%;
+	text-decoration: none;
+	color: #FC4C02;
+}
+
+
+.logo{
+	background-image: url("./img/route-finder.png")
 }
 
 .master-nav-head img {
-  width: 3%;
-  padding-left: 2%;
+  width: 3.5%;
+	/*-webkit-transform: translateY(-10%);
+  -ms-transform: translateY(-10%);*/
+	padding-left: 2%;
+}
+
+.main-container {
+  background-image: url("../img/marin.jpeg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: 100% 20%;
+  height: 900px;
+  margin-top: 40px;
+}
+
+.form-container {
+  width: 500px;
+  margin: 5px auto 0 auto;
+  padding: 45px 20px 45px 20px;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+}
+
+
+.homepage-label {
+  font-size:15px;
+  clip: rect(0, 0, 0, 0);
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 7px;
 }
 
 .user-input-homepage {
@@ -96,37 +130,13 @@ nav {
   border-radius: 3px;
 }
 
-/*.nav-wrapper {
-  padding-left: 2%;
-}*/
-
-.main-container {
-  background-image: url("../img/marin.jpeg");
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-  background-position: 100% 20%;
-  height: 900px;
-  margin-top: 60px;
-}
-
-.form-container {
-  width: 500px;
-  margin: 5px auto 0 auto;
-  padding: 45px 20px 45px 20px;
-  overflow: hidden;
-  text-align: center;
-  position: relative;
-}
-
 .main-headline {
   font-size: 350%;
   color: #4d4d4d;
   text-align: center;
   padding-top: 5%;
   font-weight: 900;
-   text-transform: uppercase;
+  text-transform: uppercase;
 
 }
 
