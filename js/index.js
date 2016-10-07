@@ -1,5 +1,8 @@
 "use strict"
 
+// initialize();
+google.maps.event.addDomListener(window, 'load', initialize);
+
 function initialize() {
   var options = {
       types: ['(cities)'],
@@ -11,5 +14,3 @@ var autocomplete = new google.maps.places.Autocomplete(input, options);
 var autocomplete = new google.maps.places.Autocomplete(locationInput, options);
 
 }
-// initialize();
-google.maps.event.addDomListener(window, 'load', initialize);
