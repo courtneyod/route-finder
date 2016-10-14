@@ -1,0 +1,23 @@
+{
+  "name": "route-finder",
+  "version": "1.0.0",
+  "description": "Find routes anywhere in the us",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/courtneyod/route-finder.git"
+  },
+  "author": "Courtney",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/courtneyod/route-finder/issues"
+  },
+  "homepage": "https://github.com/courtneyod/route-finder#readme"
+}
