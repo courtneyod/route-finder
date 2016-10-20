@@ -65,9 +65,9 @@ window.onload = function() {
 
   function init(){
     var userInput = getQueryParams();
-    addValuesToInput(userInput.location, userInput.milerange, userInput.maxdistance, userInput.mindistance, userInput.elevgain, userInput.elevmin);
+    addValuesToInput(userInput.location, userInput.milerange, userInput.sliderhiddenmaxdistance, userInput.sliderhiddenmindistance, userInput.sliderhiddenmaxelevation, userInput.sliderhiddenminelevation);
 
-    var routesPromise = getMatchingRoutes(userInput.location, userInput.milerange, userInput.maxdistance, userInput.mindistance, userInput.elevgain, userInput.elevmin);
+    var routesPromise = getMatchingRoutes(userInput.location, userInput.milerange, userInput.sliderhiddenmaxdistance, userInput.sliderhiddenmindistance, userInput.sliderhiddenmaxelevation, userInput.sliderhiddenminelevation);
 
     routesPromise.done(function(data){
       $.spin('false');
@@ -135,7 +135,7 @@ window.onload = function() {
 
   // TODO - refactor using .map()
   var mapRoutesToFriendlyObjects = function(routeOptions) {
-    console.log(routeOptions.length)
+    //console.log(routeOptions.length)
     var routeIdArray = [];
     var routeContainerObj = [];
 
@@ -203,6 +203,7 @@ window.onload = function() {
           let formatedAddress = data.results[0].formatted_address;
           routeContainerObj[i].cityAndState = ((formatedAddress).substring(0, formatedAddress.length - 15));
           renderRideOptions(routeContainerObj[i], routeContainerObjLength)
+
         })
     }
   }
@@ -308,11 +309,12 @@ window.onload = function() {
     }
   }
 
-
   function displayRouteOnMap(routeId){
     var routeDetailsPromise = getRouteDetails(routeId);
     routeDetailsPromise.done(function(data){
       putPathOnMap(data.track_points)
+      $('#graph').remove(); // this is my <canvas> element
+      parseDataCanvas(data.track_points);
     });
   }
 

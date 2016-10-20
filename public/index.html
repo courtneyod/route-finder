@@ -7,11 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/public/css/style.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRIiHf8ZLSzIhVTGQoedYNO7pM8UQD6dk&libraries=places">
-        < script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.js" >
-    </script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRIiHf8ZLSzIhVTGQoedYNO7pM8UQD6dk&libraries=places"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.js" ></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="/public/js/index.js" charset="utf-8"></script>
     <title>Route Finder</title>
 </head>
@@ -32,7 +32,7 @@
             </p>
         </div>
         <div class="row form-container">
-            <form class="route-input" action="/public/route-options.html" method="GET">
+            <form id="form" class="route-input" action="/public/route-options.html" method="GET">
                 <p class="form-headline">
                     Where would you like to go?
                 </p>
@@ -59,7 +59,24 @@
                                 </select>
                             </div>
 
+
                             <div class="input-group">
+                              <label class="range-slider homepage-label" for="amount">Distance:</label>
+                              <input type="text" class="range-slider" id="distance" readonly style="border:0; color:#FC4C02; font-weight:bold;">
+                              <input type="hidden" class="hidden-min-distance" name="sliderhiddenmindistance" value="0" />
+                              <input type="hidden" class="hidden-max-distance" name="sliderhiddenmaxdistance" value="0" />
+                              <div id="slider-range"></div>
+                            </div>
+
+                            <div class="input-group">
+                              <label id="elevation-range" class="range-slider homepage-label" for="amount">Elevation:</label>
+                              <input type="text" class="range-slider" id="elevation" readonly style="border:0; color:#FC4C02; font-weight:bold;">
+
+                            <input type="hidden" class="hidden-min-elevation" name="sliderhiddenminelevation" value="0" />
+                            <input type="hidden" class="hidden-max-elevation" name="sliderhiddenmaxelevation" value="0" />
+                            <div id="slider-range-elevation"></div>
+                                </div>
+                            <!-- <div class="input-group">
                               <label class="homepage-label" for="distance">Max Distance</label>
                               <input class="user-input-homepage" type="text" placeholder="Max Distance (mi)" id="maxdistance" name="maxdistance" />
                             </div>
@@ -74,7 +91,7 @@
                             <div class="input-group">
                               <label class="homepage-label" for="elev-min">Min Evelation Gain</label>
                               <input class="user-input-homepage" type="number" placeholder="Min Elevation Gain (ft)" id="elev-min" name="elevmin" />
-                            </div>
+                            </div> -->
                         </fieldset>
                         </div>
                     </div>
@@ -86,14 +103,33 @@
                     </div>
             </form>
             </div>
-            <div class="row">
-
-            </div>
-            <footer>
-
-            </footer>
 
     </main>
+    <section class="details-container">
+      <div class="details-div">
+        <div class="details-copy">
+          <h2>Discover new routes that work for you!  </h2>
+          <p>
+            Don't spend all day sifting through blog posts to find a fun ride.
+          </p>
+        </div>
+
+        <div class="details-image">
+
+        </div>
+      </div>
+    </section>
+
+    <footer>
+        <ul>
+          <li>
+            Copy Rigts: Courtney O'Donnell
+          </li>
+          <li>Ride with GPS API</li>
+          <li>Google Maps Api</li>
+        </ul>
+
+    </footer>
 </body>
 
 </html>

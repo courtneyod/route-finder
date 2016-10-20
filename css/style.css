@@ -1,0 +1,355 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	vertical-align: baseline;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+.details-container {
+	background-color: #dedede !important;
+}
+
+.details-div {
+	width: 80%;
+  margin: 0 auto;
+	text-align: center;
+}
+
+.details-image {
+	background-image: url("../img/ride-example.png");
+	background-position: center;
+}
+
+.details-copy {
+	color: #4d4d4d;
+}
+
+/* ----- =nav bar ----- */
+
+.nav-bar-fixed {
+	height: 40px;
+}
+
+.master-nav-head {
+	vertical-align: middle;
+	display: table-cell;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+	line-height: 20px;
+  color: #FC4C02;
+  background-color: #dfdfdf;
+  width: 100%;
+  opacity: 0.8;
+  filter: alpha(opacity=50);
+}
+
+.nav-wrapper {
+	vertical-align: middle;
+  display: table-cell;
+}
+
+.nav-content {
+  display: inline-block;
+  font-size: 116%;
+	text-decoration: none;
+	color: #FC4C02;
+}
+
+/* ----- =nav logo ----- */
+
+.logo{
+	background-image: url("./img/route-finder.png")
+}
+
+.master-nav-head img {
+  width: 3.5%;
+	/*-webkit-transform: translateY(-10%);
+  -ms-transform: translateY(-10%);*/
+	padding-left: 2%;
+}
+
+/* ----- =main container styling ----- */
+
+.main-container {
+  background-image: url("../img/marin.jpeg");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: 100% 20%;
+  height: 900px;
+  margin-top: 45px;
+}
+
+/* ----- =form styling ----- */
+
+.form-container {
+  width: 500px;
+  margin: 5px auto 0 auto;
+  padding: 45px 20px 45px 20px;
+  overflow: hidden;
+  text-align: center;
+  position: relative;
+}
+
+.main-headline {
+  font-size: 350%;
+  color: #4d4d4d;
+  text-align: center;
+  padding-top: 5%;
+  font-weight: 900;
+  text-transform: uppercase;
+
+}
+
+.form-headline {
+  font-size: 120%;
+  color: #4d4d4d;
+  text-align: center;
+  padding-bottom: 25px;
+}
+
+.route-input {
+  border-radius: 4px;
+  color: #333;
+  text-shadow: none;
+  background-color: rgba(255,255,255,0.9);
+  padding: 50px;
+}
+
+.homepage-label {
+  font-size:15px;
+  clip: rect(0, 0, 0, 0);
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: 7px;
+  color: #4d4d4d;
+}
+
+.user-input-homepage {
+  min-height: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 1px 0;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  font-weight: 300;
+  border-radius: 3px;
+}
+
+.input-wrapper {
+  width: 280px;
+  margin: 0 auto;
+	width: 359px;
+}
+
+.input-group {
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+.select-group {
+	margin-bottom: 0;
+}
+
+#mile-range {
+	background: #fff;
+	background: #fff;
+  min-height: 40px;
+  box-sizing: border-box;
+  margin: 0 0 10px 0;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 300;
+  border-radius: 3px;
+  height: 40px;
+}
+
+.select-mile-range {
+	border: 1px solid #ccc;
+	width: 50%;
+	color: #999999;
+}
+
+.show-label-text {
+	font-size: 1-px;
+}
+
+.user-input {
+  margin: 10px 0;
+  padding: 0;
+  border: none;
+  font-size: 14px;
+}
+
+.range-slider {
+	margin-bottom: 40px;
+	font-size:14px;
+}
+
+.ui-slider .ui-slider-handle {
+	background: #d9d9d9;
+}
+
+#elevation-range {
+	margin-bottom: 11px;
+}
+/* ----- =form button ----- */
+
+.form-container button {
+  min-height: 40px;
+  font-size: 16px;
+  margin-top: 10px;
+  border-radius: 3px;
+  width: 90%;
+  color: #fff;
+  background-color: #FC4C02;
+  border-color: #FC4C02;
+  border: 1px solid #ccc;
+	font-weight: 700;
+  font-size: 18px;
+  letter-spacing: .01rem;
+  text-transform: Uppercase;
+}
+
+.form-container button:hover {
+background-image:none;
+background-color: #e34402;
+}
+
+
+
+/* Tablets ----------- */
+@media only screen and (max-width : 767px) {
+	.main-container {
+	  margin-top: 45px;
+	}
+
+	.form-container {
+		width: 470px;
+		padding: 10px 10px 10px 10px;
+	}
+
+	.main-headline {
+	  font-size: 220%;
+	}
+
+	.form-headline {
+	  font-size: 110%;
+	  padding-bottom: 20px;
+	}
+
+	.route-input {
+	  border-radius: 4px;
+	  color: #333;
+	  text-shadow: none;
+	  background-color: rgba(255,255,255,0.9);
+	  padding: 30px 20px;
+	}
+
+
+}
+
+
+/* phones ----------- */
+@media only screen and (max-width : 400px) {
+	.main-container {
+	  margin-top: 41px;
+	}
+
+	.form-container {
+		width: 273px;
+		padding: 10px 10px 10px 10px;
+	}
+
+	.main-headline {
+	  font-size: 190%;
+		margin-bottom: 20px;
+		padding-top: 30px;
+	}
+
+	.form-headline {
+	  font-size: 110%;
+	  padding-bottom: 20px;
+	}
+
+	.route-input {
+	  border-radius: 4px;
+	  color: #333;
+	  text-shadow: none;
+	  background-color: rgba(255,255,255,0.9);
+	  padding: 30px 20px 30px 30px;
+	}
+
+	.user-input-homepage {
+	  min-height: 40px;
+	  width: 60%;
+	  box-sizing: border-box;
+	  margin: 0 0 1px 0;
+	  padding: 5px 10px;
+	  border: 1px solid #ccc;
+	  font-size: 14px;
+	  font-weight: 300;
+	  border-radius: 3px;
+	}
+
+	.homepage-label {
+		display: block;
+		color: #4d4d4d;
+	}
+
+	.select-mile-range {
+		border: 1px solid #ccc;
+		width: 60%;
+		color: #999999;
+	}
+
+	.form-container button {
+	  width: 100%;
+	}
+
+}
