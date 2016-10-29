@@ -11,9 +11,9 @@ window.onload = function() {
 
   function init(){
     var userInput = getQueryParams();
-    addValuesToInput(userInput.location, userInput.milerange, userInput.sliderhiddenmaxdistance, userInput.sliderhiddenmindistance, userInput.sliderhiddenmaxelevation, userInput.sliderhiddenminelevation);
+    addValuesToInput(userInput.location, userInput.milerange, userInput.maxdistance, userInput.mindistance, userInput.maxelevation, userInput.minelevation);
 
-    var routesPromise = getMatchingRoutes(userInput.location, userInput.milerange, userInput.sliderhiddenmaxdistance, userInput.sliderhiddenmindistance, userInput.sliderhiddenmaxelevation, userInput.sliderhiddenminelevation);
+    var routesPromise = getMatchingRoutes(userInput.location, userInput.milerange, userInput.maxdistance, userInput.mindistance, userInput.maxelevation, userInput.minelevation);
 
     routesPromise.done(function(data){
       $.spin('false');
@@ -42,7 +42,24 @@ window.onload = function() {
       vars[params[0]] = params[1];
       }
 
-    return vars;
+    return sortRangeSliders(vars)
+    //return vars;
+  }
+
+  function sortRangeSliders(paramObj){
+    let distance = paramObj.distancerange;
+    let keyValues = distance.split('+-+');
+    paramObj.mindistance = keyValues[0];
+    let keyValuesMax = keyValues[1].split('+');
+    paramObj.maxdistance = keyValuesMax[0];
+
+    let elevation = paramObj.elevationrange;
+    let keyValuesElevation = elevation.split('+-+');
+    paramObj.minelevation = keyValuesElevation[0];
+    keyValuesMax = keyValuesElevation[1].split('+');
+    paramObj.maxelevation = keyValuesMax[0];
+    console.log(paramObj)
+    return paramObj
   }
 
   function addValuesToInput(location, mileRange, maxDistance, minDistance, elevGain, elevMin){
@@ -64,10 +81,10 @@ window.onload = function() {
     inputElevMin.value = elevMin;
   }
 
-  function getMatchingRoutes(location, mileRange, maxdistance, mindistance, elevGain, elevMin) {
+  function getMatchingRoutes(location, mileRange, maxDistance, minDistance, elevGain, elevMin) {
     location = location.substring(0, location.length - 17)
     return $.ajax({
-      url:  `https://ridewithgps.com/find/search.js?search%5Bkeywords%5D=&search%5Bstart_location%5D=${location}&search%5Bstart_distance%5D=${mileRange}&search%5Belevation_max%5D=${elevGain}&search%5Belevation_min%5D=${elevMin}&search%5Blength_max%5D=${maxdistance}&search%5Blength_min%5D=${mindistance}&search%5Boffset%5D=0&search%5Blimit%5D=20&search%5Bsort_by%5D=length+des`,
+      url:  `https://ridewithgps.com/find/search.js?search%5Bkeywords%5D=&search%5Bstart_location%5D=${location}&search%5Bstart_distance%5D=${mileRange}&search%5Belevation_max%5D=${elevGain}&search%5Belevation_min%5D=${elevMin}&search%5Blength_max%5D=${maxDistance}&search%5Blength_min%5D=${minDistance}&search%5Boffset%5D=0&search%5Blimit%5D=20&search%5Bsort_by%5D=length+des`,
       method: "GET",
       dataType: "jsonp",
       beforeSend: function(xhr) {

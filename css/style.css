@@ -43,7 +43,7 @@ table {
 	border-spacing: 0;
 }
 
-
+/* ------------- copy below the form -------------------*/
 .details-container {
 	background-color: #dedede !important;
 }
@@ -63,7 +63,7 @@ table {
 	color: #4d4d4d;
 }
 
-/* ----- =nav bar ----- */
+/* -------------- =nav bar ------------ */
 
 .nav-bar-fixed {
 	height: 40px;

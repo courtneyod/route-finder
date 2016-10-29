@@ -34,12 +34,6 @@ function parseDataCanvas(dataRoute){
       })
       max = Math.max.apply(null, possibleMaxNumbers)
 
-      // for(var i = 0; i < data.values.length; i ++) {
-      //     if(data.values[i].y > max) {
-      //         max = data.values[i].y;
-      //     }
-      // }
-
       console.log(max, "this is the max")
       return max;
   }
@@ -56,7 +50,7 @@ function parseDataCanvas(dataRoute){
 
 function drawGraph(data){
     var graphContainerDiv = $('.graph-container');
-    graphContainerDiv.append('<canvas id="graph" width="900" height="400" style="border:1px solid #ccc; padding: 10px;"></canvas>');
+    graphContainerDiv.append('<canvas id="graph" width="1000" height="400" style="border:1px solid #ccc; padding: 10px;"></canvas>');
     //console.log(data.values, "hihihihih")
     graph = $('#graph');
     //console.log(graph)
@@ -81,8 +75,8 @@ function drawGraph(data){
 
     // Draw the Y value texts
     context.textAlign = "right"
-    context.textBaseline = "middle";
-    var maxY = getMaxY(data)
+    context.textBaseline = "top";
+    var maxY = getMaxY(data);
     for(var i = 0; i < maxY; i += 100) {
         context.fillText(i, xPadding - 10, getYPixel(i, data, maxY) );
     }
@@ -96,13 +90,4 @@ function drawGraph(data){
         context.lineTo(getXPixel(i, data), getYPixel(data.values[i].y, data, maxY));
     }
     context.stroke();
-
-    // Draw the dots
-    context.fillStyle = '#333';
-
-    for(var i = 0; i < data.values.length; i ++) {
-        context.beginPath();
-        context.arc(getXPixel(i, data), getYPixel(data.values[i].y, data, maxY), 4, 0, Math.PI * 2, true);
-        context.fill();
-    }
 }

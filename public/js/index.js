@@ -29,8 +29,6 @@ $( function() {
       "  miles" );
       var minDistance = $("#slider-range").slider("values", 0);
       var maxDistance = $("#slider-range").slider("values", 1);
-       $('.hidden-min-distance').val(minDistance);
-       $('.hidden-max-distance').val(maxDistance);
   });
 
 

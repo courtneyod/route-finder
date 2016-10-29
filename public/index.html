@@ -62,19 +62,14 @@
 
                             <div class="input-group">
                               <label class="range-slider homepage-label" for="amount">Distance:</label>
-                              <input type="text" class="range-slider" id="distance" readonly style="border:0; color:#FC4C02; font-weight:bold;">
-                              <input type="hidden" class="hidden-min-distance" name="sliderhiddenmindistance" value="0" />
-                              <input type="hidden" class="hidden-max-distance" name="sliderhiddenmaxdistance" value="0" />
+                              <input type="text" name="distancerange" class="range-slider" id="distance" readonly style="border:0; color:#FC4C02; font-weight:bold;">
                               <div id="slider-range"></div>
                             </div>
 
                             <div class="input-group">
                               <label id="elevation-range" class="range-slider homepage-label" for="amount">Elevation:</label>
                               <!-- give them names and parse  -->
-                              <input type="text" class="range-slider" id="elevation" readonly style="border:0; color:#FC4C02; font-weight:bold;">
-
-                            <input type="hidden" class="hidden-min-elevation" name="sliderhiddenminelevation" value="0" />
-                            <input type="hidden" class="hidden-max-elevation" name="sliderhiddenmaxelevation" value="0" />
+                              <input type="text" class="elecation-range" name="elevationrange" id="elevation" readonly style="border:0; color:#FC4C02; font-weight:bold;">
                             <div id="slider-range-elevation"></div>
                                 </div>
 
@@ -83,10 +78,7 @@
                         </div>
                     </div>
                     <div>
-                        <!-- <a href="route-options.html"> -->
-                        <button class="btn-large waves-effect waves-light" id="search-button" type="submit" name="action">
-            Search</button>
-                        <!-- </a> -->
+                        <button class="btn-large waves-effect waves-light" id="search-button" type="submit" name="action">Search</button>
                     </div>
             </form>
             </div>
@@ -108,14 +100,17 @@
     </section>
 
     <footer>
-        <ul>
+      <div class="footer-container">
+        <ul class="footer-list">
           <li>
-            Copy Rigts: Courtney O'Donnell
+            &copy; Courtney O'Donnell
           </li>
+        </ul>
+        <ul class="footer-list">
           <li>Ride with GPS API</li>
           <li>Google Maps Api</li>
         </ul>
-
+      </div>
     </footer>
 </body>
 

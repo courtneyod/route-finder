@@ -101,7 +101,7 @@ table {
   -o-background-size: cover;
   background-size: cover;
   background-position: 100% 20%;
-  height: 900px;
+  height: 700px;
   margin-top: 45px;
 }
 
@@ -229,9 +229,58 @@ table {
 background-image:none;
 background-color: #e34402;
 }
+/* ------------- copy below the form -------------------*/
+.details-container {
+	background-color: #dedede !important;
+}
 
+.details-div {
+	width: 80%;
+  margin: 0 auto;
+	text-align: center;
+	padding: 40px 0;
+}
 
-/* Tablets ----------- */
+.details-image {
+	background-image: url("../img/ride-example.png");
+	background-position: center;
+	height: 450px;
+}
+
+.details-copy {
+	color: #4d4d4d;
+	padding: 40px 0;
+	background-color: #fff;
+}
+
+.details-copy h2 {
+	font-weight: 300;
+	letter-spacing: -0.02em;
+  line-height: 1.2em;
+	font-size: 46px;
+}
+
+.details-copy p {
+	margin-top: 10px;
+	font-size: 22px;
+}
+
+/* ---------------footer ----------- */
+.footer-list {
+ color: #4d4d4d;
+ padding: 10px;
+}
+
+.footer-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.footer-list li {
+	padding: 4px 0;
+}
+/* ---------------Tablets ----------- */
 @media only screen and (max-width : 767px) {
 	.main-container {
 	  margin-top: 45px;
