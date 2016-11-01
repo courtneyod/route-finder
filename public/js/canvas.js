@@ -6,35 +6,38 @@ var yPadding = 30;
 
 
 function parseDataCanvas(dataRoute){
-  //console.log(dataRoute, "this is dataRoute")
-  var dataR = {values: []};
+  let dataR = {values: []};
+  let minE = getMaxX(dataRoute);
+
   for (var i = 3; i < dataRoute.length - 2; i+= 1) {
     if (dataRoute[i].d !== undefined && dataRoute[i].e !== undefined){
     dataR.values.push({
       x: (dataRoute[i].d*(0.000621)).toFixed(1),
-      y: (dataRoute[i].e*(3.2808399)).toFixed(1)
+      y: ((dataRoute[i].e - minE)*(3.2808399)).toFixed(1)
     });
   }
   }
-  //console.log(dataR, "this is data values")
   drawGraph(dataR)
   return dataR;
 };
-// var data = parseDataCanvas()
 
-
+// Returns the min X value in our data list
+function getMaxX(data){
+  let min = 0;
+  let possibleMinNumbers = data.map(function(cur){
+    return cur.e;
+  });
+  min = Math.min.apply(null, possibleMinNumbers);
+  return min;
+}
 
 // Returns the max Y value in our data list
   function getMaxY(data) {
-      var max = 0;
-      console.log(data, "for max loop", data.values.length)
-
-      var possibleMaxNumbers = data.values.map(function(cur){
-        return cur.y
+      let max = 0;
+      let possibleMaxNumbers = data.values.map(function(cur){
+        return cur.y;
       })
-      max = Math.max.apply(null, possibleMaxNumbers)
-
-      console.log(max, "this is the max")
+      max = Math.max.apply(null, possibleMaxNumbers);
       return max;
   }
 
@@ -51,9 +54,7 @@ function parseDataCanvas(dataRoute){
 function drawGraph(data){
     var graphContainerDiv = $('.graph-container');
     graphContainerDiv.append('<canvas id="graph" width="1000" height="400" style="border:1px solid #ccc; padding: 10px;"></canvas>');
-    //console.log(data.values, "hihihihih")
     graph = $('#graph');
-    //console.log(graph)
     var context = graph[0].getContext('2d');
 
     context.lineWidth = 2;

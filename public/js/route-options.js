@@ -81,19 +81,19 @@ window.onload = function() {
     inputElevMin.value = elevMin;
   }
 
-  function getMatchingRoutes(location, mileRange, maxDistance, minDistance, elevGain, elevMin) {
-    location = location.substring(0, location.length - 17)
-    return $.ajax({
-      url:  `https://ridewithgps.com/find/search.js?search%5Bkeywords%5D=&search%5Bstart_location%5D=${location}&search%5Bstart_distance%5D=${mileRange}&search%5Belevation_max%5D=${elevGain}&search%5Belevation_min%5D=${elevMin}&search%5Blength_max%5D=${maxDistance}&search%5Blength_min%5D=${minDistance}&search%5Boffset%5D=0&search%5Blimit%5D=20&search%5Bsort_by%5D=length+des`,
-      method: "GET",
-      dataType: "jsonp",
-      beforeSend: function(xhr) {
-      $("#baconIpsumOutput").html('');
-      $.spin('true');
-
-      }
-    })
-  }
+  // function getMatchingRoutes(location, mileRange, maxDistance, minDistance, elevGain, elevMin) {
+  //   location = location.substring(0, location.length - 17)
+  //   return $.ajax({
+  //     url:  `https://ridewithgps.com/find/search.js?search%5Bkeywords%5D=&search%5Bstart_location%5D=${location}&search%5Bstart_distance%5D=${mileRange}&search%5Belevation_max%5D=${elevGain}&search%5Belevation_min%5D=${elevMin}&search%5Blength_max%5D=${maxDistance}&search%5Blength_min%5D=${minDistance}&search%5Boffset%5D=0&search%5Blimit%5D=20&search%5Bsort_by%5D=length+des`,
+  //     method: "GET",
+  //     dataType: "jsonp",
+  //     beforeSend: function(xhr) {
+  //     $("#baconIpsumOutput").html('');
+  //     $.spin('true');
+  //
+  //     }
+  //   })
+  // }
 
 
 
@@ -237,7 +237,7 @@ window.onload = function() {
     });
   }
 
-
+  //initMap(firstLat ,firstLong, locations);
   function initMap(firstLat ,firstLong, locations) {
     var myLatLng = {lat: firstLat, lng: firstLong};
     var labelIndex = 0;
@@ -283,13 +283,13 @@ window.onload = function() {
   }
 
 
-  function getRouteDetails(routeId) {
-    return $.ajax({
-      url:  `https://ridewithgps.com/routes/${routeId}.json`,
-      method: "GET",
-      dataType: "jsonp"
-    })
-  };
+  // function getRouteDetails(routeId) {
+  //   return $.ajax({
+  //     url:  `https://ridewithgps.com/routes/${routeId}.json`,
+  //     method: "GET",
+  //     dataType: "jsonp"
+  //   })
+  // };
 
   function putPathOnMap(trackPoints){
     var paths = [];
@@ -311,7 +311,6 @@ window.onload = function() {
 
   function createAndAppendSubRoute(firstLatLongMaker, lastLatLongMaker, paths){
     // Load the Visualization API and the columnchart package.
-
     google.load('visualization', '1', {callback: 'console.log("working")', packages: ['columnchart']});
 
     if(window.curBikeLine !== null){
@@ -332,12 +331,12 @@ window.onload = function() {
       });
       window.curBikeLine.setMap(mapObj.map);
 
-      window.elevator = new google.maps.ElevationService;
-
-      window.elevator.getElevationAlongPath({
-         path: paths,
-         samples: 10
-       }, plotElevation);
+      // window.elevator = new google.maps.ElevationService;
+      //
+      // window.elevator.getElevationAlongPath({
+      //    path: paths,
+      //    samples: 10
+      //  }, plotElevation);
       }
 
     addMarkers()
@@ -361,37 +360,37 @@ window.onload = function() {
     return window.curBikeLine;
   }
 
-  function plotElevation(elevations, status){
-
-    var chartDiv = document.getElementById('elevation_chart');
-        if (status !== 'OK') {
-          chartDiv.className = "hide-chart-error"
-          // Show the error code inside the chartDiv.
-          chartDiv.innerHTML = 'Cannot show elevation: request failed because ' +
-              status;
-          return;
-        }
-        // Create a new chart in the elevation_chart DIV.
-        var chart = new google.visualization.ColumnChart(chartDiv);
-
-        // Extract the data from which to populate the chart.
-        // Because the samples are equidistant, the 'Sample'
-        // column here does double duty as distance along the
-        // X axis.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Sample');
-        data.addColumn('number', 'Elevation');
-        for (var i = 0; i < elevations.length; i++) {
-          data.addRow(['', elevations[i].elevation]);
-        }
-
-        // Draw the chart using the data within its DIV.
-        chart.draw(data, {
-          height: 150,
-          legend: 'none',
-          titleY: 'Elevation (m)'
-        });
-      }
+  // function plotElevation(elevations, status){
+  //
+  //   var chartDiv = document.getElementById('elevation_chart');
+  //       if (status !== 'OK') {
+  //         chartDiv.className = "hide-chart-error"
+  //         // Show the error code inside the chartDiv.
+  //         chartDiv.innerHTML = 'Cannot show elevation: request failed because ' +
+  //             status;
+  //         return;
+  //       }
+  //       // Create a new chart in the elevation_chart DIV.
+  //       var chart = new google.visualization.ColumnChart(chartDiv);
+  //
+  //       // Extract the data from which to populate the chart.
+  //       // Because the samples are equidistant, the 'Sample'
+  //       // column here does double duty as distance along the
+  //       // X axis.
+  //       var data = new google.visualization.DataTable();
+  //       data.addColumn('string', 'Sample');
+  //       data.addColumn('number', 'Elevation');
+  //       for (var i = 0; i < elevations.length; i++) {
+  //         data.addRow(['', elevations[i].elevation]);
+  //       }
+  //
+  //       // Draw the chart using the data within its DIV.
+  //       chart.draw(data, {
+  //         height: 150,
+  //         legend: 'none',
+  //         titleY: 'Elevation (m)'
+  //       });
+  //     }
 
 
   function latLongObject(routeObject){
